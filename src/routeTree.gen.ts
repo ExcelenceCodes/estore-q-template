@@ -11,6 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutUsRouteImport } from './routes/about-us'
+import { Route as CartRouteImport } from './routes/cart'
+import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as ContactsRouteImport } from './routes/contacts'
 import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
@@ -26,6 +28,7 @@ import { Route as SellerDashboardRouteImport } from './routes/seller.dashboard'
 import { Route as SellerOrdersRouteImport } from './routes/seller.orders'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as ShopIndexRouteImport } from './routes/shop.index'
 import { Route as SuperIndexRouteImport } from './routes/super.index'
 import { Route as SuperAboutRouteImport } from './routes/super.about'
 import { Route as SuperBlogRouteImport } from './routes/super.blog'
@@ -47,7 +50,9 @@ import { Route as SuperShippingRouteImport } from './routes/super.shipping'
 import { Route as SuperSocialsRouteImport } from './routes/super.socials'
 import { Route as SuperTeamRouteImport } from './routes/super.team'
 import { Route as SuperUsersRouteImport } from './routes/super.users'
+import { Route as ApiPublicCartRouteImport } from './routes/api/public/cart'
 import { Route as SellerProductsNewRouteImport } from './routes/seller.products.new'
+import { Route as ShopProductSlugRouteImport } from './routes/shop.product.$slug'
 import { Route as ApiPublicMediaIdRouteImport } from './routes/api/public/media.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -58,6 +63,16 @@ const IndexRoute = IndexRouteImport.update({
 const AboutUsRoute = AboutUsRouteImport.update({
   id: '/about-us',
   path: '/about-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CartRoute = CartRouteImport.update({
+  id: '/cart',
+  path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactsRoute = ContactsRouteImport.update({
@@ -133,6 +148,11 @@ const ServicesIndexRoute = ServicesIndexRouteImport.update({
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/services/$slug',
   path: '/services/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopIndexRoute = ShopIndexRouteImport.update({
+  id: '/shop/',
+  path: '/shop/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SuperIndexRoute = SuperIndexRouteImport.update({
@@ -240,9 +260,19 @@ const SuperUsersRoute = SuperUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => SuperRoute,
 } as any)
+const ApiPublicCartRoute = ApiPublicCartRouteImport.update({
+  id: '/api/public/cart',
+  path: '/api/public/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SellerProductsNewRoute = SellerProductsNewRouteImport.update({
   id: '/seller/products/new',
   path: '/seller/products/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopProductSlugRoute = ShopProductSlugRouteImport.update({
+  id: '/shop/product/$slug',
+  path: '/shop/product/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiPublicMediaIdRoute = ApiPublicMediaIdRouteImport.update({
@@ -254,6 +284,8 @@ const ApiPublicMediaIdRoute = ApiPublicMediaIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
+  '/cart': typeof CartRoute
+  '/checkout': typeof CheckoutRoute
   '/contacts': typeof ContactsRoute
   '/gallery': typeof GalleryRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -289,13 +321,18 @@ export interface FileRoutesByFullPath {
   '/super/users': typeof SuperUsersRoute
   '/blog/': typeof BlogIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/shop/': typeof ShopIndexRoute
   '/super/': typeof SuperIndexRoute
+  '/api/public/cart': typeof ApiPublicCartRoute
   '/seller/products/new': typeof SellerProductsNewRoute
+  '/shop/product/$slug': typeof ShopProductSlugRoute
   '/api/public/media/$id': typeof ApiPublicMediaIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
+  '/cart': typeof CartRoute
+  '/checkout': typeof CheckoutRoute
   '/contacts': typeof ContactsRoute
   '/gallery': typeof GalleryRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -330,14 +367,19 @@ export interface FileRoutesByTo {
   '/super/users': typeof SuperUsersRoute
   '/blog': typeof BlogIndexRoute
   '/services': typeof ServicesIndexRoute
+  '/shop': typeof ShopIndexRoute
   '/super': typeof SuperIndexRoute
+  '/api/public/cart': typeof ApiPublicCartRoute
   '/seller/products/new': typeof SellerProductsNewRoute
+  '/shop/product/$slug': typeof ShopProductSlugRoute
   '/api/public/media/$id': typeof ApiPublicMediaIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
+  '/cart': typeof CartRoute
+  '/checkout': typeof CheckoutRoute
   '/contacts': typeof ContactsRoute
   '/gallery': typeof GalleryRoute
   '/robots.txt': typeof RobotsDottxtRoute
@@ -373,8 +415,11 @@ export interface FileRoutesById {
   '/super/users': typeof SuperUsersRoute
   '/blog/': typeof BlogIndexRoute
   '/services/': typeof ServicesIndexRoute
+  '/shop/': typeof ShopIndexRoute
   '/super/': typeof SuperIndexRoute
+  '/api/public/cart': typeof ApiPublicCartRoute
   '/seller/products/new': typeof SellerProductsNewRoute
+  '/shop/product/$slug': typeof ShopProductSlugRoute
   '/api/public/media/$id': typeof ApiPublicMediaIdRoute
 }
 export interface FileRouteTypes {
@@ -382,6 +427,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about-us'
+    | '/cart'
+    | '/checkout'
     | '/contacts'
     | '/gallery'
     | '/robots.txt'
@@ -417,13 +464,18 @@ export interface FileRouteTypes {
     | '/super/users'
     | '/blog/'
     | '/services/'
+    | '/shop/'
     | '/super/'
+    | '/api/public/cart'
     | '/seller/products/new'
+    | '/shop/product/$slug'
     | '/api/public/media/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about-us'
+    | '/cart'
+    | '/checkout'
     | '/contacts'
     | '/gallery'
     | '/robots.txt'
@@ -458,13 +510,18 @@ export interface FileRouteTypes {
     | '/super/users'
     | '/blog'
     | '/services'
+    | '/shop'
     | '/super'
+    | '/api/public/cart'
     | '/seller/products/new'
+    | '/shop/product/$slug'
     | '/api/public/media/$id'
   id:
     | '__root__'
     | '/'
     | '/about-us'
+    | '/cart'
+    | '/checkout'
     | '/contacts'
     | '/gallery'
     | '/robots.txt'
@@ -500,14 +557,19 @@ export interface FileRouteTypes {
     | '/super/users'
     | '/blog/'
     | '/services/'
+    | '/shop/'
     | '/super/'
+    | '/api/public/cart'
     | '/seller/products/new'
+    | '/shop/product/$slug'
     | '/api/public/media/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutUsRoute: typeof AboutUsRoute
+  CartRoute: typeof CartRoute
+  CheckoutRoute: typeof CheckoutRoute
   ContactsRoute: typeof ContactsRoute
   GalleryRoute: typeof GalleryRoute
   RobotsDottxtRoute: typeof RobotsDottxtRoute
@@ -523,7 +585,10 @@ export interface RootRouteChildren {
   ServicesSlugRoute: typeof ServicesSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
+  ShopIndexRoute: typeof ShopIndexRoute
+  ApiPublicCartRoute: typeof ApiPublicCartRoute
   SellerProductsNewRoute: typeof SellerProductsNewRoute
+  ShopProductSlugRoute: typeof ShopProductSlugRoute
   ApiPublicMediaIdRoute: typeof ApiPublicMediaIdRoute
 }
 
@@ -541,6 +606,20 @@ declare module '@tanstack/react-router' {
       path: '/about-us'
       fullPath: '/about-us'
       preLoaderRoute: typeof AboutUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cart': {
+      id: '/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contacts': {
@@ -646,6 +725,13 @@ declare module '@tanstack/react-router' {
       path: '/services/$slug'
       fullPath: '/services/$slug'
       preLoaderRoute: typeof ServicesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop/': {
+      id: '/shop/'
+      path: '/shop'
+      fullPath: '/shop/'
+      preLoaderRoute: typeof ShopIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/super/': {
@@ -795,11 +881,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SuperUsersRouteImport
       parentRoute: typeof SuperRoute
     }
+    '/api/public/cart': {
+      id: '/api/public/cart'
+      path: '/api/public/cart'
+      fullPath: '/api/public/cart'
+      preLoaderRoute: typeof ApiPublicCartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/seller/products/new': {
       id: '/seller/products/new'
       path: '/seller/products/new'
       fullPath: '/seller/products/new'
       preLoaderRoute: typeof SellerProductsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop/product/$slug': {
+      id: '/shop/product/$slug'
+      path: '/shop/product/$slug'
+      fullPath: '/shop/product/$slug'
+      preLoaderRoute: typeof ShopProductSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/media/$id': {
@@ -865,6 +965,8 @@ const SuperRouteWithChildren = SuperRoute._addFileChildren(SuperRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutUsRoute: AboutUsRoute,
+  CartRoute: CartRoute,
+  CheckoutRoute: CheckoutRoute,
   ContactsRoute: ContactsRoute,
   GalleryRoute: GalleryRoute,
   RobotsDottxtRoute: RobotsDottxtRoute,
@@ -880,7 +982,10 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesSlugRoute: ServicesSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
+  ShopIndexRoute: ShopIndexRoute,
+  ApiPublicCartRoute: ApiPublicCartRoute,
   SellerProductsNewRoute: SellerProductsNewRoute,
+  ShopProductSlugRoute: ShopProductSlugRoute,
   ApiPublicMediaIdRoute: ApiPublicMediaIdRoute,
 }
 export const routeTree = rootRouteImport

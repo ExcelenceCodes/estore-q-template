@@ -18,7 +18,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { site, pageTitle } from "@/lib/site";
 import { buildBreadcrumbSchema, buildItemListSchema } from "@/lib/seo";
 
-export const Route = createFileRoute("/shop")({
+export const Route = createFileRoute("/shop/")({
   loader: async ({ search }) => {
     const [products, categories, brands, promotions] = await Promise.all([
       listProducts({
