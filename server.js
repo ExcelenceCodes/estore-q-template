@@ -77,8 +77,6 @@ const server = createHttpServer((req, res) => {
   });
 });
 
-const http = createHttpServer;
-
 const port = Number(process.env.PORT || 4_321);
 server.listen(port, () => {
   console.log(`Unified proxy listening on http://localhost:${port}`);
