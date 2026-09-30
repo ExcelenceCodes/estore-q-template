@@ -86,7 +86,11 @@ class LocalQueryBuilder {
   async maybeSingle(): Promise<{ data: Record<string, Json> | null; error: any; count?: number }> {
     this._limit = 1;
     const result = await this.execute();
-    return { data: result.data.length > 0 ? result.data[0] : null, error: null, count: result.count };
+    return {
+      data: result.data.length > 0 ? result.data[0] : null,
+      error: null,
+      count: result.count,
+    };
   }
 
   async single(): Promise<{ data: Record<string, Json> | null; error: any; count?: number }> {

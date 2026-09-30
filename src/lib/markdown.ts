@@ -28,7 +28,7 @@ export function markdownToHtml(markdown: string): string {
   }
 
   while (i < lines.length) {
-    let line = lines[i];
+    const line = lines[i];
     const trimmed = line.trim();
 
     if (trimmed === "") {
@@ -115,7 +115,10 @@ function inlineFormat(text: string): string {
   result = result.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   result = result.replace(/\*(.+?)\*/g, "<em>$1</em>");
   result = result.replace(/`(.+?)`/g, "<code>$1</code>");
-  result = result.replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+  result = result.replace(
+    /\[(.+?)\]\((.+?)\)/g,
+    '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
+  );
 
   return result;
 }

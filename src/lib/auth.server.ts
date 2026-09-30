@@ -105,3 +105,94 @@ export async function signOut() {
   if (token) await db().from("site_sessions").delete().eq("token", token);
   deleteCookie(COOKIE, { path: "/" });
 }
+
+/* ============================================================
+   CUSTOMER AUTH
+   ============================================================ */
+
+const CUSTOMER_COOKIE = process.env["CUSTOMER_SESSION_COOKIE_NAME"] || "customer_session";
+
+export type CustomerSession = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+};
+
+function newCustomerToken() {
+  const bytes = new Uint8Array(32);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+export async function signInCustomer(
+  email: string,
+  password: string,
+): Promise<CustomerSession | null> {
+  const client = db();
+  const { data: customer } = await client
+    .from("customers")
+    .select("id,name,email,phone,password_hash,active")
+    .eq("email", email.trim().toLowerCase())
+    .maybeSingle();
+
+  if (!customer || !customer.active || !verifyPassword(password, customer.password_hash))
+    return null;
+
+  const token = newCustomerToken();
+  const expires = new Date(Date.now() + 30 * 864e5);
+  await client.from("site_sessions").insert({
+    token,
+    user_id: customer.id,
+    expires_at: expires.toISOString(),
+  });
+
+  setCookie(CUSTOMER_COOKIE, token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 30 * 86400,
+  });
+
+  return {
+    id: customer.id,
+    name: customer.name,
+    email: customer.email,
+    phone: customer.phone,
+  };
+}
+
+export async function currentCustomer(): Promise<CustomerSession | null> {
+  const token = getCookie(CUSTOMER_COOKIE);
+  if (!token) return null;
+
+  const client = db();
+  const { data: session } = await client
+    .from("site_sessions")
+    .select("user_id,expires_at")
+    .eq("token", token)
+    .maybeSingle();
+
+  if (!session || new Date(session.expires_at).getTime() < Date.now()) return null;
+
+  const { data: customer } = await client
+    .from("customers")
+    .select("id,name,email,phone,active")
+    .eq("id", session.user_id)
+    .maybeSingle();
+
+  if (!customer || !customer.active) return null;
+  return {
+    id: customer.id,
+    name: customer.name,
+    email: customer.email,
+    phone: customer.phone,
+  };
+}
+
+export async function signOutCustomer() {
+  const token = getCookie(CUSTOMER_COOKIE);
+  if (token) await db().from("site_sessions").delete().eq("token", token);
+  deleteCookie(CUSTOMER_COOKIE, { path: "/" });
+}

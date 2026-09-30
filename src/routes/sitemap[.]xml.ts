@@ -10,10 +10,7 @@ export const Route = createFileRoute("/sitemap.xml")({
 
         const [services, articles, photos] = await Promise.all([
           client.from("services").select("slug,updated_at").eq("published", true),
-          client
-            .from("articles")
-            .select("slug,updated_at")
-            .eq("status", "published"),
+          client.from("articles").select("slug,updated_at").eq("status", "published"),
           client.from("gallery_photos").select("id").limit(1),
         ]);
 

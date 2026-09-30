@@ -2,7 +2,14 @@ import { useState } from "react";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Plus, Save, Trash2, X } from "lucide-react";
 import { adminListTeam, saveTeamMember, deleteTeamMember } from "@/lib/admin.functions";
-import { Field, inputClass, ImagePicker, PageHeading, Panel, useAction } from "@/components/admin/ui";
+import {
+  Field,
+  inputClass,
+  ImagePicker,
+  PageHeading,
+  Panel,
+  useAction,
+} from "@/components/admin/ui";
 import { imageOf } from "@/components/site/Icon";
 
 type Draft = {
@@ -15,7 +22,14 @@ type Draft = {
   order_index: number;
 };
 
-const empty: Draft = { name: "", role: "", bio: "", photo_id: null, photo_url: null, order_index: 0 };
+const empty: Draft = {
+  name: "",
+  role: "",
+  bio: "",
+  photo_id: null,
+  photo_url: null,
+  order_index: 0,
+};
 
 export const Route = createFileRoute("/super/team")({
   loader: () => adminListTeam(),
@@ -23,7 +37,13 @@ export const Route = createFileRoute("/super/team")({
 });
 
 function TeamAdmin() {
-  const { rows } = Route.useLoaderData() as { rows: any[]; total: number; page: number; pageSize: number; totalPages: number };
+  const { rows } = Route.useLoaderData() as {
+    rows: any[];
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  };
   const router = useRouter();
   const [draft, setDraft] = useState<Draft | null>(null);
   const { loading, execute } = useAction();
@@ -69,7 +89,13 @@ function TeamAdmin() {
                   className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
                   disabled={loading === "save"}
                 >
-                  {loading === "save" ? "Saving..." : <><Save className="h-4 w-4" /> Save</>}
+                  {loading === "save" ? (
+                    "Saving..."
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" /> Save
+                    </>
+                  )}
                 </button>
                 <button
                   onClick={() => setDraft(null)}
@@ -157,17 +183,21 @@ function TeamAdmin() {
               >
                 Edit
               </button>
-               <button
-                 onClick={async () => {
-                   if (!confirm(`Remove ${row.name}?`)) return;
-                   await execute(`delete-${row.id}`, () => deleteTeamMember({ data: { id: row.id } }), "Removed");
-                   await router.invalidate();
-                 }}
-                 className="rounded-md border border-border px-3 py-1.5 text-sm font-semibold text-muted-foreground hover:text-destructive"
-                 disabled={loading === `delete-${row.id}`}
-               >
-                 {loading === `delete-${row.id}` ? "..." : <Trash2 className="h-4 w-4" />}
-               </button>
+              <button
+                onClick={async () => {
+                  if (!confirm(`Remove ${row.name}?`)) return;
+                  await execute(
+                    `delete-${row.id}`,
+                    () => deleteTeamMember({ data: { id: row.id } }),
+                    "Removed",
+                  );
+                  await router.invalidate();
+                }}
+                className="rounded-md border border-border px-3 py-1.5 text-sm font-semibold text-muted-foreground hover:text-destructive"
+                disabled={loading === `delete-${row.id}`}
+              >
+                {loading === `delete-${row.id}` ? "..." : <Trash2 className="h-4 w-4" />}
+              </button>
             </div>
           </div>
         ))}

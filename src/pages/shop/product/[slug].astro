@@ -1,0 +1,109 @@
+---
+import { getProduct, trackProductView } from "@/lib/public.functions";
+import { site } from "@/lib/site";
+import { detectLocale, type Locale } from "@/lib/i18n";
+import { t } from "@/lib/i18n/translate";
+
+const requestLocale = (() => {
+  try {
+    const mod = await import("@tanstack/react-start/server");
+    return () => detectLocale(mod.getRequest ? mod.getRequest()?.headers?.get("accept-language") : undefined);
+  } catch {
+    return () => "en" as const;
+  }
+})();
+
+const locale: Locale = requestLocale();
+const dict = (key: string, fallback?: string) => t(locale, key, fallback);
+
+type Props = { slug: string };
+const { slug } = Astro.params as Props;
+
+const { data: product } = await getProduct({ data: { slug } });
+if (!product) return Astro.redirect("/shop");
+
+await trackProductView({ data: { productId: product.product.id, sessionId: Astro.cookies.get("cart_id")?.value ?? "guest" } });
+
+const images = product.images ?? [];
+const variants = product.variants ?? [];
+const specs = product.specs ?? [];
+const primaryImage = images[0]?.image_url || "/placeholder.png";
+const price = Number(product.product.price).toLocaleString();
+const compareAt = product.product.compare_at_price ? Number(product.product.compare_at_price).toLocaleString() : null;
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{product.product.title} | {site.brand.name}</title>
+    <meta name="description" content={product.product.description?.slice(0, 160) || `Buy ${product.product.title} online`} />
+    <link rel="canonical" href={`https://estore.q-template.com/shop/product/${product.product.slug}`} />
+  </head>
+  <body>
+    <main>
+      <div class="container-page py-12">
+        <nav class="mb-8 text-sm text-muted-foreground">
+          <a href="/" class="hover:underline">{dict("nav.home", "Home")}</a>
+          <span class="mx-2">/</span>
+          <a href="/shop" class="hover:underline">{dict("nav.shop", "Shop")}</a>
+          <span class="mx-2">/</span>
+          <span class="text-foreground">{product.product.title}</span>
+        </nav>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="aspect-square bg-muted rounded-lg overflow-hidden">
+            <img src={primaryImage} alt={product.product.title} class="w-full h-full object-cover" />
+          </div>
+
+          <div>
+            <h1 class="text-3xl font-bold mb-4">{product.product.title}</h1>
+
+            <div class="flex items-baseline gap-3 mb-6">
+              <span class="text-3xl font-bold">TZS {price}</span>
+              {compareAt && <span class="text-xl text-muted-foreground line-through">TZS {compareAt}</span>}
+            </div>
+
+            <p class="text-muted-foreground mb-6 whitespace-pre-line">{product.product.description}</p>
+
+            {variants.length > 0 && (
+              <div class="mb-6">
+                <h3 class="font-semibold mb-2">{dict("product.variants", "Variants")}</h3>
+                <div class="flex flex-wrap gap-2">
+                  {variants.map((v: any) => (
+                    <span class="px-3 py-1 border rounded-md text-sm">{v.title || v.sku || v.id}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {specs.length > 0 && (
+              <div class="mb-6">
+                <h3 class="font-semibold mb-2">{dict("product.specifications", "Specifications")}</h3>
+                <dl class="grid grid-cols-2 gap-2 text-sm">
+                  {specs.map((s: any) => (
+                    <>
+                      <dt class="text-muted-foreground">{s.spec_definition?.name}</dt>
+                      <dd class="font-medium">{String(s.value_text || s.value_number || s.value_boolean || s.value_json || '')}</dd>
+                    </>
+                  ))}
+                </dl>
+              </div>
+            )}
+
+            <form method="POST" action="/api/cart" class="space-y-4">
+              <input type="hidden" name="productId" value={product.product.id} />
+              <div class="flex items-center gap-4">
+                <label class="text-sm font-medium">{dict("product.quantity", "Quantity")}</label>
+                <input type="number" name="quantity" value="1" min="1" class="w-20 rounded-md border px-3 py-2" />
+              </div>
+              <button type="submit" class="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-primary-foreground hover:opacity-90 transition-opacity">
+                {dict("product.addToCart", "Add to Cart")}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

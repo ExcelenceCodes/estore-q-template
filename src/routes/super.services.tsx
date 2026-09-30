@@ -2,7 +2,14 @@ import { useState } from "react";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Plus, Trash2, Save, X } from "lucide-react";
 import { adminListServices, saveService, deleteService } from "@/lib/admin.functions";
-import { Field, inputClass, PageHeading, Panel, ImagePicker, useAction } from "@/components/admin/ui";
+import {
+  Field,
+  inputClass,
+  PageHeading,
+  Panel,
+  ImagePicker,
+  useAction,
+} from "@/components/admin/ui";
 import { slugify } from "@/lib/admin-client";
 import { Icon } from "@/components/site/Icon";
 
@@ -37,7 +44,13 @@ const empty: Draft = {
 };
 
 function ServicesAdmin() {
-  const { rows } = Route.useLoaderData() as { rows: Draft[]; total: number; page: number; pageSize: number; totalPages: number };
+  const { rows } = Route.useLoaderData() as {
+    rows: Draft[];
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  };
   const router = useRouter();
   const [draft, setDraft] = useState<Draft | null>(null);
   const { loading, execute } = useAction();
@@ -90,7 +103,13 @@ function ServicesAdmin() {
                   className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
                   disabled={loading === "save"}
                 >
-                  {loading === "save" ? "Saving..." : <><Save className="h-4 w-4" /> Save</>}
+                  {loading === "save" ? (
+                    "Saving..."
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" /> Save
+                    </>
+                  )}
                 </button>
               </div>
             }
@@ -160,7 +179,10 @@ function ServicesAdmin() {
                     onChange={(e) =>
                       setDraft({
                         ...draft,
-                        highlights: e.target.value.split("\n").map((v) => v.trim()).filter(Boolean),
+                        highlights: e.target.value
+                          .split("\n")
+                          .map((v) => v.trim())
+                          .filter(Boolean),
                       })
                     }
                   />
@@ -220,13 +242,19 @@ function ServicesAdmin() {
               >
                 Edit
               </button>
-               <button
-                 onClick={() => execute(`delete-${row.id}`, () => remove(row.id), "Service deleted")}
-                 className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10"
-                 disabled={loading === `delete-${row.id}`}
-               >
-                 {loading === `delete-${row.id}` ? "Deleting..." : <><Trash2 className="h-4 w-4" /> Delete</>}
-               </button>
+              <button
+                onClick={() => execute(`delete-${row.id}`, () => remove(row.id), "Service deleted")}
+                className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10"
+                disabled={loading === `delete-${row.id}`}
+              >
+                {loading === `delete-${row.id}` ? (
+                  "Deleting..."
+                ) : (
+                  <>
+                    <Trash2 className="h-4 w-4" /> Delete
+                  </>
+                )}
+              </button>
             </div>
           </article>
         ))}

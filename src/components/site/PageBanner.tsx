@@ -23,7 +23,10 @@ export function PageBanner({
         <h1 className="font-display text-3xl font-black text-ink-foreground sm:text-4xl">
           {title}
         </h1>
-         <nav aria-label="Breadcrumb" className="mt-3 flex items-center gap-1 text-xs text-ink-foreground/75">
+        <nav
+          aria-label="Breadcrumb"
+          className="mt-3 flex items-center gap-1 text-xs text-ink-foreground/75"
+        >
           <Link to="/" className="hover:text-primary">
             Home
           </Link>

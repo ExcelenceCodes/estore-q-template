@@ -35,7 +35,13 @@ async function dimensions(file: File): Promise<{ width?: number; height?: number
 export async function filePayload(file: File, alt?: string): Promise<UploadPayload> {
   if (file.size > 8 * 1024 * 1024) throw new Error("Images must be 8 MB or smaller.");
   const [base64, size] = await Promise.all([readBase64(file), dimensions(file)]);
-  return { filename: file.name, mime: file.type || "application/octet-stream", base64, alt, ...size };
+  return {
+    filename: file.name,
+    mime: file.type || "application/octet-stream",
+    base64,
+    alt,
+    ...size,
+  };
 }
 
 export function slugify(value: string) {

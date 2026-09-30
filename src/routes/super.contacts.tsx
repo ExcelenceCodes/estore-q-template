@@ -15,7 +15,8 @@ const fallback: ContactSettings = {
 };
 
 export const Route = createFileRoute("/super/contacts")({
-  loader: async () => ((await getSetting({ data: { key: "contacts" } })) as ContactSettings) ?? fallback,
+  loader: async () =>
+    ((await getSetting({ data: { key: "contacts" } })) as ContactSettings) ?? fallback,
   component: ContactsAdmin,
 });
 
@@ -32,7 +33,9 @@ function ListEditor({
 }) {
   return (
     <div className="space-y-2">
-      <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</span>
+      <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        {label}
+      </span>
       {values.map((value, i) => (
         <div key={i} className="flex gap-2">
           <input
@@ -77,7 +80,13 @@ function ContactsAdmin() {
         description="Phone numbers, emails, address, working hours and the map."
         action={
           <button
-            onClick={() => void execute("save", () => saveSetting({ data: { key: "contacts", value: data } }), "Contacts saved")}
+            onClick={() =>
+              void execute(
+                "save",
+                () => saveSetting({ data: { key: "contacts", value: data } }),
+                "Contacts saved",
+              )
+            }
             className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
             disabled={loading === "save"}
           >
@@ -149,9 +158,7 @@ function ContactsAdmin() {
                 />
                 <button
                   type="button"
-                  onClick={() =>
-                    setData({ ...data, hours: data.hours.filter((_, j) => j !== i) })
-                  }
+                  onClick={() => setData({ ...data, hours: data.hours.filter((_, j) => j !== i) })}
                   className="rounded-md border border-border px-2 text-muted-foreground hover:text-destructive"
                   aria-label="Remove"
                 >

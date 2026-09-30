@@ -13,21 +13,19 @@
     "foundedYear": 2020
   },
   "seo": {
-    "titleTemplate": "%s | Biashara Point Consultancy",
-    "defaultTitle": "Biashara Point Consultancy | Business Registration & Consultancy Tanzania",
-    "defaultDescription": "Company registration, business licences, work permits, trademarks and bankable business plans for local and foreign investors in Tanzania.",
+    "titleTemplate": "%s | Biashara Point Store",
+    "defaultTitle": "Biashara Point Store | Shop Online Tanzania",
+    "defaultDescription": "Shop online at Biashara Point Store. Browse products, track orders, and enjoy fast delivery across Tanzania.",
     "keywords": [
-      "company registration Tanzania",
-      "business licences",
-      "work permits",
-      "trademark registration",
-      "business plans",
-      "Bureau de Change",
-      "Tanzania business consultancy"
+      "online shop Tanzania",
+      "ecommerce Tanzania",
+      "buy online",
+      "delivery Tanzania",
+      "Biashara Point"
     ],
     "locale": "en_US",
     "twitterHandle": "",
-    "organizationType": "ProfessionalService",
+    "organizationType": "Store",
     "themeColor": "#0f172a",
     "socials": {
       "twitter": ""
@@ -257,6 +255,7 @@
   "navigation": {
     "primary": [
       { "label": "Home", "to": "/" },
+      { "label": "Shop", "to": "/shop" },
       { "label": "About Us", "to": "/about-us" },
       { "label": "Our Services", "to": "/services", "dynamic": "services" },
       { "label": "Blog", "to": "/blog", "requires": "articles" },
@@ -281,7 +280,8 @@
     "gallery": true,
     "team": true,
     "map": true,
-    "darkModeToggle": true
+    "darkModeToggle": true,
+    "shop": true
   },
   "limits": {
     "galleryMaxPhotos": 85,

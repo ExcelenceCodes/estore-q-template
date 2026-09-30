@@ -45,12 +45,7 @@ export function Icon({ name, ...props }: { name: string } & LucideProps) {
   const brand = BRAND_ICONS[name];
   if (brand) {
     return (
-      <svg
-        role="img"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        {...props}
-      >
+      <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
         <path d={brand.path} fill="currentColor" />
       </svg>
     );

@@ -20,6 +20,7 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteLoader } from "@/components/site/SiteLoader";
 import { BackToTop } from "@/components/site/BackToTop";
 import { Toaster } from "@/components/ui/sonner";
+import { CartProvider } from "@/components/site/CartProvider";
 
 function NotFoundComponent() {
   return (
@@ -93,10 +94,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:locale", content: site.seo.locale },
       { name: "twitter:card", content: "summary_large_image" },
-      ...(site.seo.socials?.twitter ? [
-        { name: "twitter:site", content: site.seo.socials.twitter },
-        { name: "twitter:creator", content: site.seo.socials.twitter },
-      ] : []),
+      ...(site.seo.socials?.twitter
+        ? [
+            { name: "twitter:site", content: site.seo.socials.twitter },
+            { name: "twitter:creator", content: site.seo.socials.twitter },
+          ]
+        : []),
       { name: "geo.region", content: `${site.seo.geo.country}-${site.seo.geo.region}` },
       { name: "geo.placename", content: site.seo.geo.locality },
       {
@@ -152,36 +155,29 @@ function RootComponent() {
     );
   }
 
-  const organization = buildOrganizationSchema(data.origin, data.contacts ? {
-    phones: data.contacts.phones,
-    emails: data.contacts.emails,
-    addressLines: data.contacts.addressLines,
-    socials: data.socials
-  } : undefined);
-  
-  const website = buildWebSiteSchema(data.origin);
-
   return (
     <QueryClientProvider client={queryClient}>
-      <SiteLoader />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(website) }}
-      />
-      <div className="flex min-h-screen flex-col">
-        <SiteHeader data={data} isNavigating={isNavigating} />
-        <main className="flex-1">
-          {/* Required: nested routes render here. */}
-          <Outlet />
-        </main>
-        <SiteFooter data={data} />
-      </div>
-      <BackToTop />
-      <Toaster position="top-right" richColors />
+      <CartProvider>
+        <SiteLoader />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(website) }}
+        />
+        <div className="flex min-h-screen flex-col">
+          <SiteHeader data={data} isNavigating={isNavigating} />
+          <main className="flex-1">
+            {/* Required: nested routes render here. */}
+            <Outlet />
+          </main>
+          <SiteFooter data={data} />
+        </div>
+        <BackToTop />
+        <Toaster position="top-right" richColors />
+      </CartProvider>
     </QueryClientProvider>
   );
 }

@@ -21,6 +21,12 @@ import {
   ChevronDown,
   User,
   HeartHandshake,
+  Package,
+  Tags,
+  Truck,
+  ShoppingCart,
+  Ticket,
+  Tag,
 } from "lucide-react";
 import { site } from "@/lib/site";
 import { adminLogout, type AdminUser } from "@/lib/admin.functions";
@@ -30,6 +36,12 @@ const NAV = [
   { to: "/super/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { to: "/super/about", label: "About", icon: Info },
   { to: "/super/services", label: "Services", icon: Briefcase },
+  { to: "/super/products", label: "Products", icon: Package },
+  { to: "/super/categories", label: "Categories", icon: Tags },
+  { to: "/super/brands", label: "Brands", icon: Tag },
+  { to: "/super/orders", label: "Orders", icon: ShoppingCart },
+  { to: "/super/promotions", label: "Promotions", icon: Ticket },
+  { to: "/super/shipping", label: "Shipping", icon: Truck },
   { to: "/super/blog", label: "Blog studio", icon: Newspaper },
   { to: "/super/gallery", label: "Gallery", icon: ImageIcon },
   { to: "/super/hero", label: "Hero", icon: Presentation },
@@ -138,16 +150,16 @@ export function AdminShell({ user, children }: { user: AdminUser; children: Reac
           <header className="admin-header sticky top-3 z-30 mt-3 flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-card/95 px-4 py-3 shadow-md backdrop-blur">
             <div className="overflow-hidden">
               <span className="brand-scroll text-sm font-bold whitespace-nowrap">
-                <span className="inline-block">{site.brand.name}&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;</span>
-                <span className="inline-block">{site.brand.name}&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;</span>
+                <span className="inline-block">
+                  {site.brand.name}&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;
+                </span>
+                <span className="inline-block">
+                  {site.brand.name}&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;
+                </span>
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <button
-                className="lg:hidden"
-                onClick={() => setOpen(true)}
-                aria-label="Open menu"
-              >
+              <button className="lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu">
                 <Menu className="h-5 w-5" />
               </button>
               <div className="relative" ref={profileRef}>

@@ -16,14 +16,21 @@ import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SuperRouteImport } from './routes/super'
+import { Route as AccountLoginRouteImport } from './routes/account.login'
+import { Route as AccountOrdersRouteImport } from './routes/account.orders'
+import { Route as AccountRegisterRouteImport } from './routes/account.register'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as QsaInfoRouteImport } from './routes/qsa.info'
+import { Route as SellerDashboardRouteImport } from './routes/seller.dashboard'
+import { Route as SellerOrdersRouteImport } from './routes/seller.orders'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as SuperIndexRouteImport } from './routes/super.index'
 import { Route as SuperAboutRouteImport } from './routes/super.about'
 import { Route as SuperBlogRouteImport } from './routes/super.blog'
+import { Route as SuperBrandsRouteImport } from './routes/super.brands'
+import { Route as SuperCategoriesRouteImport } from './routes/super.categories'
 import { Route as SuperContactsRouteImport } from './routes/super.contacts'
 import { Route as SuperDashboardRouteImport } from './routes/super.dashboard'
 import { Route as SuperGalleryRouteImport } from './routes/super.gallery'
@@ -31,11 +38,16 @@ import { Route as SuperHelpRouteImport } from './routes/super.help'
 import { Route as SuperHeroRouteImport } from './routes/super.hero'
 import { Route as SuperInquiriesRouteImport } from './routes/super.inquiries'
 import { Route as SuperLoginRouteImport } from './routes/super.login'
+import { Route as SuperOrdersRouteImport } from './routes/super.orders'
+import { Route as SuperProductsRouteImport } from './routes/super.products'
+import { Route as SuperPromotionsRouteImport } from './routes/super.promotions'
 import { Route as SuperServicesRouteImport } from './routes/super.services'
 import { Route as SuperSettingsRouteImport } from './routes/super.settings'
+import { Route as SuperShippingRouteImport } from './routes/super.shipping'
 import { Route as SuperSocialsRouteImport } from './routes/super.socials'
 import { Route as SuperTeamRouteImport } from './routes/super.team'
 import { Route as SuperUsersRouteImport } from './routes/super.users'
+import { Route as SellerProductsNewRouteImport } from './routes/seller.products.new'
 import { Route as ApiPublicMediaIdRouteImport } from './routes/api/public/media.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -73,6 +85,21 @@ const SuperRoute = SuperRouteImport.update({
   path: '/super',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountLoginRoute = AccountLoginRouteImport.update({
+  id: '/account/login',
+  path: '/account/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountOrdersRoute = AccountOrdersRouteImport.update({
+  id: '/account/orders',
+  path: '/account/orders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRegisterRoute = AccountRegisterRouteImport.update({
+  id: '/account/register',
+  path: '/account/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
@@ -86,6 +113,16 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
 const QsaInfoRoute = QsaInfoRouteImport.update({
   id: '/qsa/info',
   path: '/qsa/info',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SellerDashboardRoute = SellerDashboardRouteImport.update({
+  id: '/seller/dashboard',
+  path: '/seller/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SellerOrdersRoute = SellerOrdersRouteImport.update({
+  id: '/seller/orders',
+  path: '/seller/orders',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesIndexRoute = ServicesIndexRouteImport.update({
@@ -111,6 +148,16 @@ const SuperAboutRoute = SuperAboutRouteImport.update({
 const SuperBlogRoute = SuperBlogRouteImport.update({
   id: '/blog',
   path: '/blog',
+  getParentRoute: () => SuperRoute,
+} as any)
+const SuperBrandsRoute = SuperBrandsRouteImport.update({
+  id: '/brands',
+  path: '/brands',
+  getParentRoute: () => SuperRoute,
+} as any)
+const SuperCategoriesRoute = SuperCategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
   getParentRoute: () => SuperRoute,
 } as any)
 const SuperContactsRoute = SuperContactsRouteImport.update({
@@ -148,6 +195,21 @@ const SuperLoginRoute = SuperLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => SuperRoute,
 } as any)
+const SuperOrdersRoute = SuperOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => SuperRoute,
+} as any)
+const SuperProductsRoute = SuperProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => SuperRoute,
+} as any)
+const SuperPromotionsRoute = SuperPromotionsRouteImport.update({
+  id: '/promotions',
+  path: '/promotions',
+  getParentRoute: () => SuperRoute,
+} as any)
 const SuperServicesRoute = SuperServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -156,6 +218,11 @@ const SuperServicesRoute = SuperServicesRouteImport.update({
 const SuperSettingsRoute = SuperSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => SuperRoute,
+} as any)
+const SuperShippingRoute = SuperShippingRouteImport.update({
+  id: '/shipping',
+  path: '/shipping',
   getParentRoute: () => SuperRoute,
 } as any)
 const SuperSocialsRoute = SuperSocialsRouteImport.update({
@@ -173,6 +240,11 @@ const SuperUsersRoute = SuperUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => SuperRoute,
 } as any)
+const SellerProductsNewRoute = SellerProductsNewRouteImport.update({
+  id: '/seller/products/new',
+  path: '/seller/products/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicMediaIdRoute = ApiPublicMediaIdRouteImport.update({
   id: '/api/public/media/$id',
   path: '/api/public/media/$id',
@@ -187,11 +259,18 @@ export interface FileRoutesByFullPath {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/super': typeof SuperRouteWithChildren
+  '/account/login': typeof AccountLoginRoute
+  '/account/orders': typeof AccountOrdersRoute
+  '/account/register': typeof AccountRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/qsa/info': typeof QsaInfoRoute
+  '/seller/dashboard': typeof SellerDashboardRoute
+  '/seller/orders': typeof SellerOrdersRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/super/about': typeof SuperAboutRoute
   '/super/blog': typeof SuperBlogRoute
+  '/super/brands': typeof SuperBrandsRoute
+  '/super/categories': typeof SuperCategoriesRoute
   '/super/contacts': typeof SuperContactsRoute
   '/super/dashboard': typeof SuperDashboardRoute
   '/super/gallery': typeof SuperGalleryRoute
@@ -199,14 +278,19 @@ export interface FileRoutesByFullPath {
   '/super/hero': typeof SuperHeroRoute
   '/super/inquiries': typeof SuperInquiriesRoute
   '/super/login': typeof SuperLoginRoute
+  '/super/orders': typeof SuperOrdersRoute
+  '/super/products': typeof SuperProductsRoute
+  '/super/promotions': typeof SuperPromotionsRoute
   '/super/services': typeof SuperServicesRoute
   '/super/settings': typeof SuperSettingsRoute
+  '/super/shipping': typeof SuperShippingRoute
   '/super/socials': typeof SuperSocialsRoute
   '/super/team': typeof SuperTeamRoute
   '/super/users': typeof SuperUsersRoute
   '/blog/': typeof BlogIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/super/': typeof SuperIndexRoute
+  '/seller/products/new': typeof SellerProductsNewRoute
   '/api/public/media/$id': typeof ApiPublicMediaIdRoute
 }
 export interface FileRoutesByTo {
@@ -216,11 +300,18 @@ export interface FileRoutesByTo {
   '/gallery': typeof GalleryRoute
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/account/login': typeof AccountLoginRoute
+  '/account/orders': typeof AccountOrdersRoute
+  '/account/register': typeof AccountRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/qsa/info': typeof QsaInfoRoute
+  '/seller/dashboard': typeof SellerDashboardRoute
+  '/seller/orders': typeof SellerOrdersRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/super/about': typeof SuperAboutRoute
   '/super/blog': typeof SuperBlogRoute
+  '/super/brands': typeof SuperBrandsRoute
+  '/super/categories': typeof SuperCategoriesRoute
   '/super/contacts': typeof SuperContactsRoute
   '/super/dashboard': typeof SuperDashboardRoute
   '/super/gallery': typeof SuperGalleryRoute
@@ -228,14 +319,19 @@ export interface FileRoutesByTo {
   '/super/hero': typeof SuperHeroRoute
   '/super/inquiries': typeof SuperInquiriesRoute
   '/super/login': typeof SuperLoginRoute
+  '/super/orders': typeof SuperOrdersRoute
+  '/super/products': typeof SuperProductsRoute
+  '/super/promotions': typeof SuperPromotionsRoute
   '/super/services': typeof SuperServicesRoute
   '/super/settings': typeof SuperSettingsRoute
+  '/super/shipping': typeof SuperShippingRoute
   '/super/socials': typeof SuperSocialsRoute
   '/super/team': typeof SuperTeamRoute
   '/super/users': typeof SuperUsersRoute
   '/blog': typeof BlogIndexRoute
   '/services': typeof ServicesIndexRoute
   '/super': typeof SuperIndexRoute
+  '/seller/products/new': typeof SellerProductsNewRoute
   '/api/public/media/$id': typeof ApiPublicMediaIdRoute
 }
 export interface FileRoutesById {
@@ -247,11 +343,18 @@ export interface FileRoutesById {
   '/robots.txt': typeof RobotsDottxtRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/super': typeof SuperRouteWithChildren
+  '/account/login': typeof AccountLoginRoute
+  '/account/orders': typeof AccountOrdersRoute
+  '/account/register': typeof AccountRegisterRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/qsa/info': typeof QsaInfoRoute
+  '/seller/dashboard': typeof SellerDashboardRoute
+  '/seller/orders': typeof SellerOrdersRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/super/about': typeof SuperAboutRoute
   '/super/blog': typeof SuperBlogRoute
+  '/super/brands': typeof SuperBrandsRoute
+  '/super/categories': typeof SuperCategoriesRoute
   '/super/contacts': typeof SuperContactsRoute
   '/super/dashboard': typeof SuperDashboardRoute
   '/super/gallery': typeof SuperGalleryRoute
@@ -259,14 +362,19 @@ export interface FileRoutesById {
   '/super/hero': typeof SuperHeroRoute
   '/super/inquiries': typeof SuperInquiriesRoute
   '/super/login': typeof SuperLoginRoute
+  '/super/orders': typeof SuperOrdersRoute
+  '/super/products': typeof SuperProductsRoute
+  '/super/promotions': typeof SuperPromotionsRoute
   '/super/services': typeof SuperServicesRoute
   '/super/settings': typeof SuperSettingsRoute
+  '/super/shipping': typeof SuperShippingRoute
   '/super/socials': typeof SuperSocialsRoute
   '/super/team': typeof SuperTeamRoute
   '/super/users': typeof SuperUsersRoute
   '/blog/': typeof BlogIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/super/': typeof SuperIndexRoute
+  '/seller/products/new': typeof SellerProductsNewRoute
   '/api/public/media/$id': typeof ApiPublicMediaIdRoute
 }
 export interface FileRouteTypes {
@@ -279,11 +387,18 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/super'
+    | '/account/login'
+    | '/account/orders'
+    | '/account/register'
     | '/blog/$slug'
     | '/qsa/info'
+    | '/seller/dashboard'
+    | '/seller/orders'
     | '/services/$slug'
     | '/super/about'
     | '/super/blog'
+    | '/super/brands'
+    | '/super/categories'
     | '/super/contacts'
     | '/super/dashboard'
     | '/super/gallery'
@@ -291,14 +406,19 @@ export interface FileRouteTypes {
     | '/super/hero'
     | '/super/inquiries'
     | '/super/login'
+    | '/super/orders'
+    | '/super/products'
+    | '/super/promotions'
     | '/super/services'
     | '/super/settings'
+    | '/super/shipping'
     | '/super/socials'
     | '/super/team'
     | '/super/users'
     | '/blog/'
     | '/services/'
     | '/super/'
+    | '/seller/products/new'
     | '/api/public/media/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -308,11 +428,18 @@ export interface FileRouteTypes {
     | '/gallery'
     | '/robots.txt'
     | '/sitemap.xml'
+    | '/account/login'
+    | '/account/orders'
+    | '/account/register'
     | '/blog/$slug'
     | '/qsa/info'
+    | '/seller/dashboard'
+    | '/seller/orders'
     | '/services/$slug'
     | '/super/about'
     | '/super/blog'
+    | '/super/brands'
+    | '/super/categories'
     | '/super/contacts'
     | '/super/dashboard'
     | '/super/gallery'
@@ -320,14 +447,19 @@ export interface FileRouteTypes {
     | '/super/hero'
     | '/super/inquiries'
     | '/super/login'
+    | '/super/orders'
+    | '/super/products'
+    | '/super/promotions'
     | '/super/services'
     | '/super/settings'
+    | '/super/shipping'
     | '/super/socials'
     | '/super/team'
     | '/super/users'
     | '/blog'
     | '/services'
     | '/super'
+    | '/seller/products/new'
     | '/api/public/media/$id'
   id:
     | '__root__'
@@ -338,11 +470,18 @@ export interface FileRouteTypes {
     | '/robots.txt'
     | '/sitemap.xml'
     | '/super'
+    | '/account/login'
+    | '/account/orders'
+    | '/account/register'
     | '/blog/$slug'
     | '/qsa/info'
+    | '/seller/dashboard'
+    | '/seller/orders'
     | '/services/$slug'
     | '/super/about'
     | '/super/blog'
+    | '/super/brands'
+    | '/super/categories'
     | '/super/contacts'
     | '/super/dashboard'
     | '/super/gallery'
@@ -350,14 +489,19 @@ export interface FileRouteTypes {
     | '/super/hero'
     | '/super/inquiries'
     | '/super/login'
+    | '/super/orders'
+    | '/super/products'
+    | '/super/promotions'
     | '/super/services'
     | '/super/settings'
+    | '/super/shipping'
     | '/super/socials'
     | '/super/team'
     | '/super/users'
     | '/blog/'
     | '/services/'
     | '/super/'
+    | '/seller/products/new'
     | '/api/public/media/$id'
   fileRoutesById: FileRoutesById
 }
@@ -369,11 +513,17 @@ export interface RootRouteChildren {
   RobotsDottxtRoute: typeof RobotsDottxtRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SuperRoute: typeof SuperRouteWithChildren
+  AccountLoginRoute: typeof AccountLoginRoute
+  AccountOrdersRoute: typeof AccountOrdersRoute
+  AccountRegisterRoute: typeof AccountRegisterRoute
   BlogSlugRoute: typeof BlogSlugRoute
   QsaInfoRoute: typeof QsaInfoRoute
+  SellerDashboardRoute: typeof SellerDashboardRoute
+  SellerOrdersRoute: typeof SellerOrdersRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
+  SellerProductsNewRoute: typeof SellerProductsNewRoute
   ApiPublicMediaIdRoute: typeof ApiPublicMediaIdRoute
 }
 
@@ -428,6 +578,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SuperRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account/login': {
+      id: '/account/login'
+      path: '/account/login'
+      fullPath: '/account/login'
+      preLoaderRoute: typeof AccountLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/orders': {
+      id: '/account/orders'
+      path: '/account/orders'
+      fullPath: '/account/orders'
+      preLoaderRoute: typeof AccountOrdersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account/register': {
+      id: '/account/register'
+      path: '/account/register'
+      fullPath: '/account/register'
+      preLoaderRoute: typeof AccountRegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/': {
       id: '/blog/'
       path: '/blog'
@@ -447,6 +618,20 @@ declare module '@tanstack/react-router' {
       path: '/qsa/info'
       fullPath: '/qsa/info'
       preLoaderRoute: typeof QsaInfoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seller/dashboard': {
+      id: '/seller/dashboard'
+      path: '/seller/dashboard'
+      fullPath: '/seller/dashboard'
+      preLoaderRoute: typeof SellerDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seller/orders': {
+      id: '/seller/orders'
+      path: '/seller/orders'
+      fullPath: '/seller/orders'
+      preLoaderRoute: typeof SellerOrdersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/': {
@@ -482,6 +667,20 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/super/blog'
       preLoaderRoute: typeof SuperBlogRouteImport
+      parentRoute: typeof SuperRoute
+    }
+    '/super/brands': {
+      id: '/super/brands'
+      path: '/brands'
+      fullPath: '/super/brands'
+      preLoaderRoute: typeof SuperBrandsRouteImport
+      parentRoute: typeof SuperRoute
+    }
+    '/super/categories': {
+      id: '/super/categories'
+      path: '/categories'
+      fullPath: '/super/categories'
+      preLoaderRoute: typeof SuperCategoriesRouteImport
       parentRoute: typeof SuperRoute
     }
     '/super/contacts': {
@@ -533,6 +732,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SuperLoginRouteImport
       parentRoute: typeof SuperRoute
     }
+    '/super/orders': {
+      id: '/super/orders'
+      path: '/orders'
+      fullPath: '/super/orders'
+      preLoaderRoute: typeof SuperOrdersRouteImport
+      parentRoute: typeof SuperRoute
+    }
+    '/super/products': {
+      id: '/super/products'
+      path: '/products'
+      fullPath: '/super/products'
+      preLoaderRoute: typeof SuperProductsRouteImport
+      parentRoute: typeof SuperRoute
+    }
+    '/super/promotions': {
+      id: '/super/promotions'
+      path: '/promotions'
+      fullPath: '/super/promotions'
+      preLoaderRoute: typeof SuperPromotionsRouteImport
+      parentRoute: typeof SuperRoute
+    }
     '/super/services': {
       id: '/super/services'
       path: '/services'
@@ -545,6 +765,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/super/settings'
       preLoaderRoute: typeof SuperSettingsRouteImport
+      parentRoute: typeof SuperRoute
+    }
+    '/super/shipping': {
+      id: '/super/shipping'
+      path: '/shipping'
+      fullPath: '/super/shipping'
+      preLoaderRoute: typeof SuperShippingRouteImport
       parentRoute: typeof SuperRoute
     }
     '/super/socials': {
@@ -568,6 +795,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SuperUsersRouteImport
       parentRoute: typeof SuperRoute
     }
+    '/seller/products/new': {
+      id: '/seller/products/new'
+      path: '/seller/products/new'
+      fullPath: '/seller/products/new'
+      preLoaderRoute: typeof SellerProductsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/media/$id': {
       id: '/api/public/media/$id'
       path: '/api/public/media/$id'
@@ -581,6 +815,8 @@ declare module '@tanstack/react-router' {
 interface SuperRouteChildren {
   SuperAboutRoute: typeof SuperAboutRoute
   SuperBlogRoute: typeof SuperBlogRoute
+  SuperBrandsRoute: typeof SuperBrandsRoute
+  SuperCategoriesRoute: typeof SuperCategoriesRoute
   SuperContactsRoute: typeof SuperContactsRoute
   SuperDashboardRoute: typeof SuperDashboardRoute
   SuperGalleryRoute: typeof SuperGalleryRoute
@@ -588,8 +824,12 @@ interface SuperRouteChildren {
   SuperHeroRoute: typeof SuperHeroRoute
   SuperInquiriesRoute: typeof SuperInquiriesRoute
   SuperLoginRoute: typeof SuperLoginRoute
+  SuperOrdersRoute: typeof SuperOrdersRoute
+  SuperProductsRoute: typeof SuperProductsRoute
+  SuperPromotionsRoute: typeof SuperPromotionsRoute
   SuperServicesRoute: typeof SuperServicesRoute
   SuperSettingsRoute: typeof SuperSettingsRoute
+  SuperShippingRoute: typeof SuperShippingRoute
   SuperSocialsRoute: typeof SuperSocialsRoute
   SuperTeamRoute: typeof SuperTeamRoute
   SuperUsersRoute: typeof SuperUsersRoute
@@ -599,6 +839,8 @@ interface SuperRouteChildren {
 const SuperRouteChildren: SuperRouteChildren = {
   SuperAboutRoute: SuperAboutRoute,
   SuperBlogRoute: SuperBlogRoute,
+  SuperBrandsRoute: SuperBrandsRoute,
+  SuperCategoriesRoute: SuperCategoriesRoute,
   SuperContactsRoute: SuperContactsRoute,
   SuperDashboardRoute: SuperDashboardRoute,
   SuperGalleryRoute: SuperGalleryRoute,
@@ -606,8 +848,12 @@ const SuperRouteChildren: SuperRouteChildren = {
   SuperHeroRoute: SuperHeroRoute,
   SuperInquiriesRoute: SuperInquiriesRoute,
   SuperLoginRoute: SuperLoginRoute,
+  SuperOrdersRoute: SuperOrdersRoute,
+  SuperProductsRoute: SuperProductsRoute,
+  SuperPromotionsRoute: SuperPromotionsRoute,
   SuperServicesRoute: SuperServicesRoute,
   SuperSettingsRoute: SuperSettingsRoute,
+  SuperShippingRoute: SuperShippingRoute,
   SuperSocialsRoute: SuperSocialsRoute,
   SuperTeamRoute: SuperTeamRoute,
   SuperUsersRoute: SuperUsersRoute,
@@ -624,11 +870,17 @@ const rootRouteChildren: RootRouteChildren = {
   RobotsDottxtRoute: RobotsDottxtRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SuperRoute: SuperRouteWithChildren,
+  AccountLoginRoute: AccountLoginRoute,
+  AccountOrdersRoute: AccountOrdersRoute,
+  AccountRegisterRoute: AccountRegisterRoute,
   BlogSlugRoute: BlogSlugRoute,
   QsaInfoRoute: QsaInfoRoute,
+  SellerDashboardRoute: SellerDashboardRoute,
+  SellerOrdersRoute: SellerOrdersRoute,
   ServicesSlugRoute: ServicesSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
+  SellerProductsNewRoute: SellerProductsNewRoute,
   ApiPublicMediaIdRoute: ApiPublicMediaIdRoute,
 }
 export const routeTree = rootRouteImport

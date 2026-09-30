@@ -26,7 +26,9 @@ export function Hero({ hero }: { hero: HeroSettings }) {
               key={s.url}
               aria-hidden={i !== index}
               className={`absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ${
-                i === index ? "opacity-100" : "opacity-0" /* removed animate-slide-bg so slides start clear */
+                i === index
+                  ? "opacity-100"
+                  : "opacity-0" /* removed animate-slide-bg so slides start clear */
               }`}
               style={{ backgroundImage: `url(${s.url})` }}
             />
@@ -42,9 +44,7 @@ export function Hero({ hero }: { hero: HeroSettings }) {
         <div className="absolute inset-0 bg-primary" />
       )}
 
-      <div
-        className="hero-bg absolute inset-y-0 left-0 w-full bg-primary/80 lg:w-2/3 lg:hover:w-full"
-      />
+      <div className="hero-bg absolute inset-y-0 left-0 w-full bg-primary/80 lg:w-2/3 lg:hover:w-full" />
 
       <div className="container-page relative flex h-[540px] flex-col justify-center py-24 md:h-[620px]">
         <div className="max-w-2xl">

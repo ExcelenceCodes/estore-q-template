@@ -2,7 +2,14 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Plus, Save, Trash2 } from "lucide-react";
 import { getSetting, saveSetting } from "@/lib/admin.functions";
-import { Field, inputClass, PageHeading, Panel, ImagePicker, useAction } from "@/components/admin/ui";
+import {
+  Field,
+  inputClass,
+  PageHeading,
+  Panel,
+  ImagePicker,
+  useAction,
+} from "@/components/admin/ui";
 import type { HeroSettings, HeroSlide } from "@/lib/public.functions";
 import { mediaUrl } from "@/components/site/Icon";
 
@@ -38,11 +45,23 @@ function HeroAdmin() {
         description="The big banner at the top of the home page."
         action={
           <button
-            onClick={() => void execute("save", () => saveSetting({ data: { key: "hero", value: hero } }), "Hero saved")}
+            onClick={() =>
+              void execute(
+                "save",
+                () => saveSetting({ data: { key: "hero", value: hero } }),
+                "Hero saved",
+              )
+            }
             className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
             disabled={loading === "save"}
           >
-            {loading === "save" ? "Saving..." : <><Save className="h-4 w-4" /> Save changes</>}
+            {loading === "save" ? (
+              "Saving..."
+            ) : (
+              <>
+                <Save className="h-4 w-4" /> Save changes
+              </>
+            )}
           </button>
         }
       />
@@ -111,7 +130,10 @@ function HeroAdmin() {
               onClick={() =>
                 setHero({
                   ...hero,
-                  slides: [...hero.slides, { url: "", title: "", subtitle: "", ctaLabel: "", ctaHref: "" }],
+                  slides: [
+                    ...hero.slides,
+                    { url: "", title: "", subtitle: "", ctaLabel: "", ctaHref: "" },
+                  ],
                 })
               }
               className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-muted"

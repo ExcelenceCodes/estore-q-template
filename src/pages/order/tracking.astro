@@ -1,0 +1,133 @@
+---
+import { getOrderByNumber } from "@/lib/public.functions";
+import { site } from "@/lib/site";
+import { detectLocale, type Locale } from "@/lib/i18n";
+import { t } from "@/lib/i18n/translate";
+
+const requestLocale = (() => {
+  try {
+    const mod = await import("@tanstack/react-start/server");
+    return () => detectLocale(mod.getRequest ? mod.getRequest()?.headers?.get("accept-language") : undefined);
+  } catch {
+    return () => "en" as const;
+  }
+})();
+
+const locale: Locale = requestLocale();
+const dict = (key: string, fallback?: string) => t(locale, key, fallback);
+
+const url = new URL(Astro.request.url);
+const orderNumber = url.searchParams.get("orderNumber") || "";
+const email = url.searchParams.get("email") || "";
+
+let order: any = null;
+let items: any[] = [];
+let history: any[] = [];
+
+if (orderNumber && email) {
+  const result = await getOrderByNumber({ data: { orderNumber, email } });
+  if (result) {
+    order = result.order;
+    items = result.items;
+    history = result.history;
+  }
+}
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{dict("orders.tracking", "Order Tracking")} | {site.brand.name}</title>
+    <meta name="description" content={dict("orders.tracking", "Track your order status")} />
+    <link rel="canonical" href="https://estore.q-template.com/order/tracking" />
+  </head>
+  <body>
+    <main>
+      <div class="container-page py-12">
+        <h1 class="text-4xl font-bold mb-8">{dict("orders.tracking", "Track Order")}</h1>
+
+        <form method="GET" action="/order/tracking" class="max-w-md mb-12">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium mb-1">{dict("orders.orderNumber", "Order Number")}</label>
+              <input type="text" name="orderNumber" value={orderNumber} placeholder="ORD-XXX" required class="w-full rounded-md border px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium mb-1">{dict("orders.email", "Email")}</label>
+              <input type="email" name="email" value={email} placeholder="your@email.com" required class="w-full rounded-md border px-3 py-2" />
+            </div>
+            <button type="submit" class="w-full inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-primary-foreground hover:opacity-90 transition-opacity">
+              {dict("orders.track", "Track")}
+            </button>
+          </div>
+        </form>
+
+        {order && (
+          <div class="border rounded-lg p-6">
+            <div class="flex justify-between items-start mb-6">
+              <div>
+                <h2 class="text-2xl font-bold">Order #{order.order_number}</h2>
+                <p class="text-muted-foreground">{dict("orders.placedOn", "Placed on")} {new Date(order.created_at).toLocaleDateString()}</p>
+              </div>
+              <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium capitalize">
+                {order.status}
+              </span>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+              <div>
+                <p class="text-sm text-muted-foreground">{dict("cart.subtotal", "Subtotal")}</p>
+                <p class="font-semibold">TZS {Number(order.subtotal).toLocaleString()}</p>
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground">{dict("cart.shipping", "Shipping")}</p>
+                <p class="font-semibold">TZS {Number(order.shipping).toLocaleString()}</p>
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground">{dict("cart.tax", "Tax")}</p>
+                <p class="font-semibold">TZS {Number(order.tax || 0).toLocaleString()}</p>
+              </div>
+              <div>
+                <p class="text-sm text-muted-foreground">{dict("cart.total", "Total")}</p>
+                <p class="font-bold text-lg">TZS {Number(order.total).toLocaleString()}</p>
+              </div>
+            </div>
+
+            <h3 class="font-semibold mb-4">{dict("orders.orderDetails", "Order Details")}</h3>
+            <div class="border rounded-lg divide-y mb-8">
+              {items?.map((item: any) => (
+                <div class="p-4 flex justify-between">
+                  <div>
+                    <p class="font-medium">Product {item.product_id.slice(0, 8)}...</p>
+                    <p class="text-sm text-muted-foreground">Qty: {item.quantity} x TZS {Number(item.unit_price).toLocaleString()}</p>
+                  </div>
+                  <p class="font-semibold">TZS {(Number(item.unit_price) * item.quantity).toLocaleString()}</p>
+                </div>
+              ))}
+            </div>
+
+            <h3 class="font-semibold mb-4">{dict("orders.history", "Order History")}</h3>
+            <div class="space-y-3">
+              {history?.map((h: any) => (
+                <div class="flex items-start gap-3">
+                  <div class="w-2 h-2 rounded-full bg-primary mt-2" />
+                  <div>
+                    <p class="font-medium capitalize">{h.status}</p>
+                    <p class="text-sm text-muted-foreground">{h.note || ''} - {new Date(h.created_at).toLocaleString()}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {orderNumber && email && !order && (
+          <div class="border border-destructive/20 bg-destructive/5 rounded-lg p-6">
+            <p class="text-destructive font-medium">{dict("orders.noOrders", "Order not found. Please check your order number and email.")}</p>
+          </div>
+        )}
+      </div>
+    </main>
+  </body>
+</html>

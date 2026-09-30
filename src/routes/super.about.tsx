@@ -30,7 +30,13 @@ function AboutAdmin() {
         description="Manage the About Us section on the home page."
         action={
           <button
-            onClick={() => void execute("save", () => saveSetting({ data: { key: "about", value: about } }), "About section saved")}
+            onClick={() =>
+              void execute(
+                "save",
+                () => saveSetting({ data: { key: "about", value: about } }),
+                "About section saved",
+              )
+            }
             className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
             disabled={loading === "save"}
           >

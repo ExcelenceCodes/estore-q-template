@@ -1,5 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2, Globe, LayoutDashboard, Mail, MapPin, Phone, Settings, Shield, Smartphone, Users, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Globe,
+  LayoutDashboard,
+  Mail,
+  MapPin,
+  Phone,
+  Settings,
+  Shield,
+  Smartphone,
+  Users,
+  Zap,
+} from "lucide-react";
 import { site, pageTitle } from "@/lib/site";
 import { PageBanner } from "@/components/site/PageBanner";
 import { Reveal } from "@/components/site/Reveal";
@@ -86,9 +99,9 @@ function QsaInfoPage() {
             Q Softwares Africa — Business Platform
           </h1>
           <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            A complete, production-ready web platform designed for consultancies, service bureaus, and
-            corporate-facing businesses. Below is a detailed, brand-independent overview of every
-            feature included so you can evaluate exactly what you are getting.
+            A complete, production-ready web platform designed for consultancies, service bureaus,
+            and corporate-facing businesses. Below is a detailed, brand-independent overview of
+            every feature included so you can evaluate exactly what you are getting.
           </p>
         </Reveal>
 
@@ -110,8 +123,8 @@ function QsaInfoPage() {
           <Reveal>
             <h2 className="font-display text-2xl font-black sm:text-3xl">Technology Stack</h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Built on modern, proven technologies chosen for performance, maintainability, and long-term
-              support.
+              Built on modern, proven technologies chosen for performance, maintainability, and
+              long-term support.
             </p>
             <ul className="mt-6 space-y-3">
               {techStack.map((t) => (
@@ -127,10 +140,11 @@ function QsaInfoPage() {
             <div className="surface-card p-7">
               <h2 className="font-display text-lg font-bold">Licence</h2>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                This platform is delivered as a fully licensed web solution for Q Softwares Africa and its
-                clients. The codebase, design system, and content structure are proprietary. Redistribution,
-                resale, or reuse without explicit written permission from Q Softwares Africa is prohibited.
-                Clients receive a deployment-ready instance with documentation and support.
+                This platform is delivered as a fully licensed web solution for Q Softwares Africa
+                and its clients. The codebase, design system, and content structure are proprietary.
+                Redistribution, resale, or reuse without explicit written permission from Q
+                Softwares Africa is prohibited. Clients receive a deployment-ready instance with
+                documentation and support.
               </p>
             </div>
 
@@ -159,7 +173,12 @@ function QsaInfoPage() {
                   <Globe size={17} className="mt-0.5 shrink-0 text-primary" />
                   <span>
                     Web:{" "}
-                    <a href="https://www.qsoftwares.co.tz" target="_blank" rel="noopener noreferrer" className="font-semibold text-primary">
+                    <a
+                      href="https://www.qsoftwares.co.tz"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-primary"
+                    >
                       www.qsoftwares.co.tz
                     </a>
                   </span>

@@ -1,0 +1,30 @@
+---
+import ProductCard from './ProductCard.astro';
+
+interface Product {
+  id: string;
+  slug: string;
+  title: string;
+  price: number | string;
+  compare_at_price?: number | string | null;
+  image_url?: string | null;
+  featured?: boolean;
+}
+
+interface Props {
+  products: Product[];
+  columns?: 1 | 2 | 3 | 4 | 5 | 6;
+}
+
+const { products, columns = 4 } = Astro.props;
+---
+
+{products.length === 0 ? (
+  <p class="text-muted-foreground py-12 text-center">No products found.</p>
+) : (
+  <div class={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-${columns} gap-6`}>
+    {products.map((product) => (
+      <ProductCard product={product} />
+    ))}
+  </div>
+)}

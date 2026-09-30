@@ -29,8 +29,7 @@ export function aiConfig(): AiConfig {
   const baseUrl = (env["AI_BASE_URL"] || "").trim().replace(/\/+$/, "");
   const apiKey = (env["AI_API_KEY"] || "").trim();
   const model = (env["AI_MODEL"] || "").trim();
-  const enabled =
-    (env["AI_ENABLED"] || "").toLowerCase() !== "false" && Boolean(baseUrl && model);
+  const enabled = (env["AI_ENABLED"] || "").toLowerCase() !== "false" && Boolean(baseUrl && model);
 
   return {
     enabled,
@@ -81,8 +80,7 @@ export async function knowledgeBase(): Promise<string> {
       }
     | undefined;
   const about = map.get("about") as
-    | { heading?: string; paragraphs?: string[]; highlight?: string }
-    | undefined;
+    { heading?: string; paragraphs?: string[]; highlight?: string } | undefined;
 
   const parts: string[] = [];
 

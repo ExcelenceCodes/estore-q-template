@@ -59,92 +59,91 @@ export function SiteHeader({ data, isNavigating }: { data: Bootstrap; isNavigati
       className="sticky top-0 z-50 transition-transform duration-300 ease-out"
       style={{ transform: hidden && !open ? `translateY(-${topHeight}px)` : "translateY(0)" }}
     >
-      {isNavigating ? (
-        <div className="route-progress-stripe" aria-hidden="true" />
-      ) : null}
+      {isNavigating ? <div className="route-progress-stripe" aria-hidden="true" /> : null}
 
       {/* top portion: socials + brand bar (slides away on scroll down) */}
       <div ref={topRef}>
-      {/* thin ink stripe with socials */}
-      <div className="lg:bg-white">
-        <div className="bg-ink text-ink-foreground lg:w-[70%] lg:ml-auto lg:top-strip-trapezoid">
-          <div className="container-page flex h-9 items-center justify-between gap-4 text-xs lg:max-w-none lg:justify-end">
-          <p className="truncate opacity-80 lg:hidden">{site.brand.motto}</p>
-          <div className="flex shrink-0 items-center gap-3">
-            {data.socials.filter((s) => s.url).map((s) => (
-              <a
-                key={s.platform}
-                href={s.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={s.platform}
-                className="opacity-80 transition-opacity hover:opacity-100"
-              >
-                 <SocialIcon platform={s.platform} size={14} />
-              </a>
-            ))}
+        {/* thin ink stripe with socials */}
+        <div className="lg:bg-white">
+          <div className="bg-ink text-ink-foreground lg:w-[70%] lg:ml-auto lg:top-strip-trapezoid">
+            <div className="container-page flex h-9 items-center justify-between gap-4 text-xs lg:max-w-none lg:justify-end">
+              <p className="truncate opacity-80 lg:hidden">{site.brand.motto}</p>
+              <div className="flex shrink-0 items-center gap-3">
+                {data.socials
+                  .filter((s) => s.url)
+                  .map((s) => (
+                    <a
+                      key={s.platform}
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={s.platform}
+                      className="opacity-80 transition-opacity hover:opacity-100"
+                    >
+                      <SocialIcon platform={s.platform} size={14} />
+                    </a>
+                  ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* brand bar */}
+        <div className={`bg-background transition-shadow ${scrolled ? "shadow-sm" : ""}`}>
+          <div className="container-page grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-3">
+            <Link to="/" className="flex min-w-0 items-center gap-3">
+              <img
+                src={site.brand.logo}
+                alt={`${site.brand.legalName} logo`}
+                width={44}
+                height={44}
+                className="h-11 w-11 shrink-0 object-contain lg:h-20 lg:w-20 lg:-mt-6 lg:-ml-12"
+                decoding="async"
+              />
+              <span className="min-w-0 lg:-mt-6">
+                <span className="block truncate font-brand text-lg font-extrabold uppercase tracking-tight sm:text-xl lg:text-[1.75rem]">
+                  {site.brand.shortName || site.brand.name}
+                </span>
+                <span className="block truncate text-xs text-muted-foreground lg:text-base">
+                  {site.brand.tagline}
+                </span>
+              </span>
+            </Link>
+
+            <div className="hidden items-center gap-8 lg:flex">
+              {phone ? (
+                <a href={`tel:${phone.replace(/\s/g, "")}`} className="flex items-center gap-3">
+                  <Phone className="shrink-0 text-primary" size={20} />
+                  <span className="text-sm leading-tight">
+                    <span className="block font-semibold">Call Us</span>
+                    <span className="block text-primary">{phone}</span>
+                  </span>
+                </a>
+              ) : null}
+              {email ? (
+                <a href={`mailto:${email}`} className="flex items-center gap-3">
+                  <Mail className="shrink-0 text-primary" size={20} />
+                  <span className="text-sm leading-tight">
+                    <span className="block font-semibold">Send us mail</span>
+                    <span className="block text-primary">{email}</span>
+                  </span>
+                </a>
+              ) : null}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              className="justify-self-end rounded-md border border-border p-2 lg:hidden"
+            >
+              {open ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
         </div>
       </div>
-      </div>
-
-      {/* brand bar */}
-      <div
-        className={`bg-background transition-shadow ${scrolled ? "shadow-sm" : ""}`}
-      >
-        <div className="container-page grid grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-3">
-          <Link to="/" className="flex min-w-0 items-center gap-3">
-            <img
-              src={site.brand.logo}
-              alt={`${site.brand.legalName} logo`}
-              width={44}
-              height={44}
-              className="h-11 w-11 shrink-0 object-contain lg:h-20 lg:w-20 lg:-mt-6 lg:-ml-12"
-              decoding="async"
-            />
-            <span className="min-w-0 lg:-mt-6">
-              <span className="block truncate font-brand text-lg font-extrabold uppercase tracking-tight sm:text-xl lg:text-[1.75rem]">
-                {site.brand.shortName || site.brand.name}
-              </span>
-              <span className="block truncate text-xs text-muted-foreground lg:text-base">
-                {site.brand.tagline}
-              </span>
-            </span>
-          </Link>
-
-          <div className="hidden items-center gap-8 lg:flex">
-            {phone ? (
-              <a href={`tel:${phone.replace(/\s/g, "")}`} className="flex items-center gap-3">
-                <Phone className="shrink-0 text-primary" size={20} />
-                <span className="text-sm leading-tight">
-                  <span className="block font-semibold">Call Us</span>
-                  <span className="block text-primary">{phone}</span>
-                </span>
-              </a>
-            ) : null}
-            {email ? (
-              <a href={`mailto:${email}`} className="flex items-center gap-3">
-                <Mail className="shrink-0 text-primary" size={20} />
-                <span className="text-sm leading-tight">
-                  <span className="block font-semibold">Send us mail</span>
-                  <span className="block text-primary">{email}</span>
-                </span>
-              </a>
-            ) : null}
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            className="justify-self-end rounded-md border border-border p-2 lg:hidden"
-          >
-            {open ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </div>
-      </div>{/* end top portion */}
+      {/* end top portion */}
 
       {/* nav bar – always visible; stays at top when top portion is hidden */}
       <nav className="hidden bg-primary text-primary-foreground lg:block">

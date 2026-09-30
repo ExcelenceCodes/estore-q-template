@@ -13,9 +13,19 @@ function DashboardPage() {
   const stats = Route.useLoaderData();
   const cards = [
     { label: "Services", value: stats.services, icon: Briefcase, to: "/super/services" as const },
-    { label: "Published articles", value: stats.articles, icon: Newspaper, to: "/super/blog" as const },
+    {
+      label: "Published articles",
+      value: stats.articles,
+      icon: Newspaper,
+      to: "/super/blog" as const,
+    },
     { label: "Drafts", value: stats.drafts, icon: FileEdit, to: "/super/blog" as const },
-    { label: "Gallery photos", value: stats.photos, icon: ImageIcon, to: "/super/gallery" as const },
+    {
+      label: "Gallery photos",
+      value: stats.photos,
+      icon: ImageIcon,
+      to: "/super/gallery" as const,
+    },
     { label: "Team members", value: stats.team, icon: Users, to: "/super/team" as const },
     { label: "New inquiries", value: stats.unread, icon: Inbox, to: "/super/inquiries" as const },
   ];
@@ -62,11 +72,16 @@ function DashboardPage() {
                 <li key={item.id} className="flex flex-wrap items-center gap-3 py-3">
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold">
-                      {item.name} <span className="font-normal text-muted-foreground">· {item.email}</span>
+                      {item.name}{" "}
+                      <span className="font-normal text-muted-foreground">· {item.email}</span>
                     </p>
-                    <p className="truncate text-sm text-muted-foreground">{item.subject || "No subject"}</p>
+                    <p className="truncate text-sm text-muted-foreground">
+                      {item.subject || "No subject"}
+                    </p>
                   </div>
-                  <span className="text-xs text-muted-foreground">{formatDate(item.created_at)}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {formatDate(item.created_at)}
+                  </span>
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
                       item.handled ? "bg-muted text-muted-foreground" : "bg-primary/10 text-primary"

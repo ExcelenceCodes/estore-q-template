@@ -49,7 +49,10 @@ function ServicesPage() {
                 </p>
                 <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary">
                   Learn more
-                  <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+                  <ArrowRight
+                    size={15}
+                    className="transition-transform group-hover:translate-x-1"
+                  />
                 </span>
               </Link>
             </Reveal>

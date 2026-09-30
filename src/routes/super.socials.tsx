@@ -23,18 +23,102 @@ const empty: Draft = {
 };
 
 const ICON_OPTIONS = [
-  "link","globe","mail","phone","message-circle","send","share-2","at-sign","rss","bookmark",
-  "music","video","image","file-text","calendar","map-pin","home","briefcase","graduation-cap","heart",
-  "star","thumbs-up","award","trophy","flag","bell","settings","help-circle","info","shield",
-  "lock","unlock","key","eye","eye-off","user","users","user-plus","camera","mic",
-  "headphones","monitor","smartphone","tablet","printer","wifi","bluetooth","cpu","hard-drive","database",
-  "cloud","sun","moon","zap","flame","droplets","wind","anchor","compass","map",
-  "arrow-up-right","external-link","download","upload","refresh-cw","repeat","shuffle","skip-forward","play","pause",
-  "square","circle","triangle","hexagon","octagon","pentagon","star-half",
-  "facebook","twitter","x","linkedin","instagram","youtube","whatsapp","tiktok","telegram","github",
+  "link",
+  "globe",
+  "mail",
+  "phone",
+  "message-circle",
+  "send",
+  "share-2",
+  "at-sign",
+  "rss",
+  "bookmark",
+  "music",
+  "video",
+  "image",
+  "file-text",
+  "calendar",
+  "map-pin",
+  "home",
+  "briefcase",
+  "graduation-cap",
+  "heart",
+  "star",
+  "thumbs-up",
+  "award",
+  "trophy",
+  "flag",
+  "bell",
+  "settings",
+  "help-circle",
+  "info",
+  "shield",
+  "lock",
+  "unlock",
+  "key",
+  "eye",
+  "eye-off",
+  "user",
+  "users",
+  "user-plus",
+  "camera",
+  "mic",
+  "headphones",
+  "monitor",
+  "smartphone",
+  "tablet",
+  "printer",
+  "wifi",
+  "bluetooth",
+  "cpu",
+  "hard-drive",
+  "database",
+  "cloud",
+  "sun",
+  "moon",
+  "zap",
+  "flame",
+  "droplets",
+  "wind",
+  "anchor",
+  "compass",
+  "map",
+  "arrow-up-right",
+  "external-link",
+  "download",
+  "upload",
+  "refresh-cw",
+  "repeat",
+  "shuffle",
+  "skip-forward",
+  "play",
+  "pause",
+  "square",
+  "circle",
+  "triangle",
+  "hexagon",
+  "octagon",
+  "pentagon",
+  "star-half",
+  "facebook",
+  "twitter",
+  "x",
+  "linkedin",
+  "instagram",
+  "youtube",
+  "whatsapp",
+  "tiktok",
+  "telegram",
+  "github",
 ];
 
-function LucideIconPicker({ value, onChange }: { value: string; onChange: (icon: string) => void }) {
+function LucideIconPicker({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (icon: string) => void;
+}) {
   const [query, setQuery] = useState("");
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -44,7 +128,9 @@ function LucideIconPicker({ value, onChange }: { value: string; onChange: (icon:
 
   return (
     <div className="space-y-2">
-      <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Icon</span>
+      <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+        Icon
+      </span>
       <div className="flex items-center gap-3 rounded-md border border-border bg-background p-2">
         <div className="grid h-10 w-10 place-items-center rounded-full bg-muted">
           <Icon name={value || "link"} className="h-5 w-5" />
@@ -89,7 +175,13 @@ export const Route = createFileRoute("/super/socials")({
 });
 
 function SocialsAdmin() {
-  const { rows } = Route.useLoaderData() as { rows: any[]; total: number; page: number; pageSize: number; totalPages: number };
+  const { rows } = Route.useLoaderData() as {
+    rows: any[];
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  };
   const router = useRouter();
   const [draft, setDraft] = useState<Draft | null>(null);
   const { loading, execute } = useAction();
@@ -113,7 +205,11 @@ function SocialsAdmin() {
     const payload = {
       rows: rows.map((r: any) => (r.id === id ? { ...r, enabled: !enabled } : r)),
     };
-    await execute(id, () => saveSocials({ data: payload }), enabled ? "Social disabled" : "Social enabled");
+    await execute(
+      id,
+      () => saveSocials({ data: payload }),
+      enabled ? "Social disabled" : "Social enabled",
+    );
     await router.invalidate();
   }
 
@@ -155,7 +251,13 @@ function SocialsAdmin() {
                   className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
                   disabled={loading === "save"}
                 >
-                  {loading === "save" ? "Saving..." : <><Save className="h-4 w-4" /> Save</>}
+                  {loading === "save" ? (
+                    "Saving..."
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" /> Save
+                    </>
+                  )}
                 </button>
               </div>
             }
@@ -207,17 +309,17 @@ function SocialsAdmin() {
           {rows.map((row: any) => (
             <div key={row.id} className="flex items-center justify-between gap-3 px-5 py-4">
               <div className="flex items-center gap-3">
-                 {(() => {
-                   const brandColor = socialIcons[row.platform.toLowerCase()]?.color ?? "#64748b";
-                   return (
-                     <div
-                       className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-white"
-                       style={{ backgroundColor: brandColor }}
-                     >
-                       <SocialIcon platform={row.platform} className="h-4 w-4" />
-                     </div>
-                   );
-                 })()}
+                {(() => {
+                  const brandColor = socialIcons[row.platform.toLowerCase()]?.color ?? "#64748b";
+                  return (
+                    <div
+                      className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-white"
+                      style={{ backgroundColor: brandColor }}
+                    >
+                      <SocialIcon platform={row.platform} className="h-4 w-4" />
+                    </div>
+                  );
+                })()}
                 <div>
                   <p className="text-sm font-semibold capitalize">{row.platform}</p>
                   <p className="text-sm text-muted-foreground">{row.url || "—"}</p>
@@ -247,13 +349,21 @@ function SocialsAdmin() {
                 >
                   Edit
                 </button>
-                 <button
-                   onClick={() => execute(`delete-${row.id}`, () => remove(row.id), "Social deleted")}
-                   className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10"
-                   disabled={loading === `delete-${row.id}`}
-                 >
-                   {loading === `delete-${row.id}` ? "Deleting..." : <><Trash2 className="h-4 w-4" /></>}
-                 </button>
+                <button
+                  onClick={() =>
+                    execute(`delete-${row.id}`, () => remove(row.id), "Social deleted")
+                  }
+                  className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10"
+                  disabled={loading === `delete-${row.id}`}
+                >
+                  {loading === `delete-${row.id}` ? (
+                    "Deleting..."
+                  ) : (
+                    <>
+                      <Trash2 className="h-4 w-4" />
+                    </>
+                  )}
+                </button>
               </div>
             </div>
           ))}

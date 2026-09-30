@@ -1,0 +1,95 @@
+---
+import { getCart } from "@/lib/public.functions";
+import { site } from "@/lib/site";
+import { detectLocale, type Locale } from "@/lib/i18n";
+import { t } from "@/lib/i18n/translate";
+
+const requestLocale = (() => {
+  try {
+    const mod = await import("@tanstack/react-start/server");
+    return () => detectLocale(mod.getRequest ? mod.getRequest()?.headers?.get("accept-language") : undefined);
+  } catch {
+    return () => "en" as const;
+  }
+})();
+
+const locale: Locale = requestLocale();
+
+const { data } = await getCart();
+const items = data ?? { items: [], subtotal: "0" };
+const subtotal = items.subtotal;
+
+const dict = (key: string, fallback?: string) => t(locale, key, fallback);
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{dict("cart.title", "Cart")} | {site.brand.name}</title>
+    <meta name="description" content={dict("cart.empty", "View your shopping cart")} />
+    <link rel="canonical" href="https://estore.q-template.com/cart" />
+  </head>
+  <body>
+    <main>
+      <div class="container-page py-12">
+        <h1 class="text-4xl font-bold mb-8">{dict("cart.title", "Shopping Cart")}</h1>
+
+        {items.items.length === 0 ? (
+          <div class="text-center py-12">
+            <p class="text-muted-foreground mb-4">{dict("cart.empty", "Your cart is empty.")}</p>
+            <a href="/shop" class="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-primary-foreground hover:opacity-90 transition-opacity">
+              {dict("shop.continueShopping", "Continue Shopping")}
+            </a>
+          </div>
+        ) : (
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2">
+              <div class="border rounded-lg divide-y">
+                {items.items.map((item: any) => (
+                  <div class="p-4 flex gap-4">
+                    <div class="w-24 h-24 bg-muted rounded-md overflow-hidden shrink-0">
+                      <img src={item.product?.image_url || '/placeholder.png'} alt={item.product?.title} class="w-full h-full object-cover" />
+                    </div>
+                    <div class="flex-1">
+                      <a href={`/shop/product/${item.product?.slug}`} class="font-semibold hover:text-primary transition-colors">
+                        {item.product?.title}
+                      </a>
+                      <p class="text-sm text-muted-foreground">TZS {Number(item.unit_price).toLocaleString()}</p>
+                      <div class="flex items-center gap-2 mt-2">
+                        <input type="number" value={item.quantity} min="1" class="w-16 rounded-md border px-2 py-1 text-sm" />
+                        <button class="text-sm text-destructive hover:underline">{dict("cart.remove", "Remove")}</button>
+                      </div>
+                    </div>
+                    <div class="text-right">
+                      <p class="font-semibold">TZS {(Number(item.unit_price) * item.quantity).toLocaleString()}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div class="lg:col-span-1">
+              <div class="border rounded-lg p-6">
+                <h3 class="font-semibold mb-4">{dict("cart.cartSummary", "Cart Summary")}</h3>
+                <div class="space-y-2 text-sm">
+                  <div class="flex justify-between">
+                    <span class="text-muted-foreground">{dict("cart.subtotal", "Subtotal")}</span>
+                    <span>TZS {Number(subtotal).toLocaleString()}</span>
+                  </div>
+                  <div class="border-t pt-2 mt-2 flex justify-between font-semibold">
+                    <span>{dict("cart.total", "Total")}</span>
+                    <span>TZS {Number(subtotal).toLocaleString()}</span>
+                  </div>
+                </div>
+                <a href="/checkout" class="mt-4 w-full inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-primary-foreground hover:opacity-90 transition-opacity">
+                  {dict("cart.proceedToCheckout", "Proceed to Checkout")}
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </main>
+  </body>
+</html>

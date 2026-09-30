@@ -1,0 +1,60 @@
+---
+import { db } from '@/lib/db.server';
+import { site } from '@/lib/site';
+import ProductCard from '@/components/astro/ProductCard.astro';
+
+const client = db();
+
+const { data: featuredProducts } = await client
+  .from('products')
+  .select('id,slug,title,price,compare_at_price,image_url')
+  .eq('status', 'published')
+  .eq('featured', true)
+  .order('published_at', { ascending: false })
+  .limit(8);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{site.brand.name} - {site.brand.tagline}</title>
+    <meta name="description" content={site.seo.defaultDescription} />
+    <link rel="canonical" href="https://estore.q-template.com/" />
+  </head>
+  <body>
+    <main>
+      <section class="py-20 bg-gradient-to-b from-muted to-background">
+        <div class="container-page text-center">
+          <h1 class="text-5xl font-bold mb-4">{site.brand.name}</h1>
+          <p class="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">{site.brand.motto}</p>
+          <a href="/shop" class="inline-flex items-center justify-center rounded-md bg-primary px-8 py-3 text-primary-foreground hover:opacity-90 transition-opacity">
+            Shop Now
+          </a>
+        </div>
+      </section>
+
+      {featuredProducts?.length > 0 && (
+        <section class="py-16">
+          <div class="container-page">
+            <h2 class="text-3xl font-bold mb-8">Featured Products</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              {featuredProducts.map((product: any) => (
+                <ProductCard product={product} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section class="py-16 bg-muted">
+        <div class="container-page text-center">
+          <h2 class="text-3xl font-bold mb-4">Why Shop With Us?</h2>
+          <p class="text-muted-foreground max-w-2xl mx-auto">
+            Fast delivery across Tanzania, quality products, and exceptional customer service.
+          </p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

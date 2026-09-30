@@ -45,9 +45,7 @@ export function Panel({
       <header className="mb-4 flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="font-display text-lg font-bold">{title}</h2>
-          {description ? (
-            <p className="text-sm text-muted-foreground">{description}</p>
-          ) : null}
+          {description ? <p className="text-sm text-muted-foreground">{description}</p> : null}
         </div>
         {action}
       </header>
@@ -179,7 +177,7 @@ export function ImagePicker({
                 onClick={(e) => e.stopPropagation()}
               />
             </div>,
-            document.body
+            document.body,
           )
         : null}
     </div>
@@ -207,7 +205,7 @@ export function useAction() {
       setLoading(null);
       return ok;
     },
-    []
+    [],
   );
 
   return { loading, execute };
@@ -255,19 +253,23 @@ export function Pagination({
         </button>
         {pages.map((p, i) =>
           p === "..." ? (
-            <span key={`e-${i}`} className="px-2 text-sm text-muted-foreground">...</span>
+            <span key={`e-${i}`} className="px-2 text-sm text-muted-foreground">
+              ...
+            </span>
           ) : (
             <button
               key={p}
               type="button"
               onClick={() => onPageChange(p as number)}
               className={`rounded-md border px-3 py-1.5 text-sm ${
-                p === page ? "border-primary bg-primary text-primary-foreground" : "border-border hover:bg-muted"
+                p === page
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border hover:bg-muted"
               }`}
             >
               {p}
             </button>
-          )
+          ),
         )}
         <button
           type="button"

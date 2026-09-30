@@ -2,7 +2,14 @@ import { useState } from "react";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Save, X, Lock } from "lucide-react";
 import { adminMe, saveMyProfile, changeMyPassword } from "@/lib/admin.functions";
-import { Field, inputClass, ImagePicker, PageHeading, Panel, useAction } from "@/components/admin/ui";
+import {
+  Field,
+  inputClass,
+  ImagePicker,
+  PageHeading,
+  Panel,
+  useAction,
+} from "@/components/admin/ui";
 
 export const Route = createFileRoute("/super/settings")({
   loader: () => adminMe(),
@@ -26,11 +33,7 @@ function SettingsPage() {
   const { loading, execute } = useAction();
 
   async function saveProfile() {
-    const ok = await execute(
-      "save-profile",
-      () => saveMyProfile({ data: form }),
-      "Profile saved"
-    );
+    const ok = await execute("save-profile", () => saveMyProfile({ data: form }), "Profile saved");
     if (ok) await router.invalidate();
   }
 
@@ -38,7 +41,7 @@ function SettingsPage() {
     const ok = await execute(
       "change-password",
       () => changeMyPassword({ data: passwords }),
-      "Password updated"
+      "Password updated",
     );
     if (ok) {
       setPasswords({ oldPassword: "", newPassword: "", confirmPassword: "" });
@@ -54,7 +57,14 @@ function SettingsPage() {
         action={
           <div className="flex gap-2">
             <button
-              onClick={() => setForm({ name: me.name ?? "", email: me.email ?? "", phone: me.phone ?? "", photo_id: me.photo_id ?? null })}
+              onClick={() =>
+                setForm({
+                  name: me.name ?? "",
+                  email: me.email ?? "",
+                  phone: me.phone ?? "",
+                  photo_id: me.photo_id ?? null,
+                })
+              }
               className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm"
             >
               <X className="h-4 w-4" /> Reset
@@ -64,7 +74,13 @@ function SettingsPage() {
               className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
               disabled={loading === "save-profile"}
             >
-              {loading === "save-profile" ? "Saving..." : <><Save className="h-4 w-4" /> Save changes</>}
+              {loading === "save-profile" ? (
+                "Saving..."
+              ) : (
+                <>
+                  <Save className="h-4 w-4" /> Save changes
+                </>
+              )}
             </button>
           </div>
         }
@@ -136,9 +152,20 @@ function SettingsPage() {
             <button
               onClick={() => void execute("change-password", changePassword, "Password updated")}
               className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-              disabled={loading === "change-password" || !passwords.oldPassword || !passwords.newPassword || !passwords.confirmPassword}
+              disabled={
+                loading === "change-password" ||
+                !passwords.oldPassword ||
+                !passwords.newPassword ||
+                !passwords.confirmPassword
+              }
             >
-              {loading === "change-password" ? "Updating..." : <><Lock className="h-4 w-4" /> Update password</>}
+              {loading === "change-password" ? (
+                "Updating..."
+              ) : (
+                <>
+                  <Lock className="h-4 w-4" /> Update password
+                </>
+              )}
             </button>
           </div>
         </Panel>

@@ -2,7 +2,15 @@ import { useState, useMemo } from "react";
 import { createFileRoute, useRouter, redirect } from "@tanstack/react-router";
 import { Plus, Save, Trash2, X } from "lucide-react";
 import { adminListUsers, saveUser, deleteUser } from "@/lib/admin.functions";
-import { Field, inputClass, ImagePicker, PageHeading, Panel, useAction, Pagination } from "@/components/admin/ui";
+import {
+  Field,
+  inputClass,
+  ImagePicker,
+  PageHeading,
+  Panel,
+  useAction,
+  Pagination,
+} from "@/components/admin/ui";
 import { imageOf } from "@/components/site/Icon";
 
 type Draft = {
@@ -109,7 +117,13 @@ function UsersAdmin() {
                   className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
                   disabled={loading === "save"}
                 >
-                  {loading === "save" ? "Saving..." : <><Save className="h-4 w-4" /> Save</>}
+                  {loading === "save" ? (
+                    "Saving..."
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" /> Save
+                    </>
+                  )}
                 </button>
               </div>
             }
@@ -149,7 +163,9 @@ function UsersAdmin() {
               </Field>
               <Field
                 label="Password"
-                hint={draft.id ? "Leave empty to keep the current password." : "At least 8 characters."}
+                hint={
+                  draft.id ? "Leave empty to keep the current password." : "At least 8 characters."
+                }
               >
                 <input
                   type="password"
@@ -244,18 +260,22 @@ function UsersAdmin() {
                     >
                       Edit
                     </button>
-                     <button
-                       onClick={async () => {
-                         if (!confirm(`Delete ${row.name}?`)) return;
-                         await execute(`delete-${row.id}`, () => deleteUser({ data: { id: row.id } }), "User deleted");
-                         await router.invalidate();
-                       }}
-                       className="ml-2 rounded-md border border-border px-2 py-1.5 text-muted-foreground hover:text-destructive"
-                       aria-label="Delete"
-                       disabled={loading === `delete-${row.id}`}
-                     >
-                       {loading === `delete-${row.id}` ? "..." : <Trash2 className="h-4 w-4" />}
-                     </button>
+                    <button
+                      onClick={async () => {
+                        if (!confirm(`Delete ${row.name}?`)) return;
+                        await execute(
+                          `delete-${row.id}`,
+                          () => deleteUser({ data: { id: row.id } }),
+                          "User deleted",
+                        );
+                        await router.invalidate();
+                      }}
+                      className="ml-2 rounded-md border border-border px-2 py-1.5 text-muted-foreground hover:text-destructive"
+                      aria-label="Delete"
+                      disabled={loading === `delete-${row.id}`}
+                    >
+                      {loading === `delete-${row.id}` ? "..." : <Trash2 className="h-4 w-4" />}
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -263,9 +283,12 @@ function UsersAdmin() {
           </table>
         </div>
 
-        <Pagination page={data.page} totalPages={data.totalPages} onPageChange={(p) => load({ page: p })} />
+        <Pagination
+          page={data.page}
+          totalPages={data.totalPages}
+          onPageChange={(p) => load({ page: p })}
+        />
       </Panel>
     </>
   );
 }
-

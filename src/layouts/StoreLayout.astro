@@ -1,0 +1,85 @@
+---
+import { site } from '@/lib/site';
+import { detectLocale, type Locale } from '@/lib/i18n';
+import '../styles.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  path?: string;
+  children?: any;
+}
+
+const { seo, brand } = site;
+
+const requestLocale = (() => {
+  try {
+    const mod = await import("@tanstack/react-start/server");
+    return () => detectLocale(mod.getRequest ? mod.getRequest()?.headers?.get("accept-language") : undefined);
+  } catch {
+    return () => "en" as const;
+  }
+})();
+
+const locale: Locale = requestLocale();
+const langLabel = locale === "sw" ? "EN" : "SW";
+const langHref = Astro.url.pathname + (Astro.url.search || "") + (locale === "sw" ? "?lang=en" : "?lang=sw");
+
+const pageTitle = (props: Props) => props.title ? `${props.title} | ${brand.name}` : `${brand.name} - ${brand.tagline}`;
+const pageDesc = (props: Props) => props.description || seo.defaultDescription;
+const pageImg = (props: Props) => props.image || brand.bannerImage;
+const pageUrl = (props: Props) => `https://estore.q-template.com${props.path || '/'}`;
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={pageDesc(Astro.props)} />
+    <meta name="theme-color" content={seo.themeColor} />
+    <link rel="icon" href={brand.favicon} />
+    <link rel="canonical" href={pageUrl(Astro.props)} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle(Astro.props)} />
+    <meta property="og:description" content={pageDesc(Astro.props)} />
+    <meta property="og:image" content={pageImg(Astro.props)} />
+    <meta property="og:url" content={pageUrl(Astro.props)} />
+    <meta property="og:site_name" content={brand.name} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle(Astro.props)} />
+    <meta name="twitter:description" content={pageDesc(Astro.props)} />
+    <meta name="twitter:image" content={pageImg(Astro.props)} />
+    <title>{pageTitle(Astro.props)}</title>
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": brand.name,
+      "description": pageDesc(Astro.props),
+      "url": pageUrl(Astro.props),
+      "image": pageImg(Astro.props),
+      "address": { "@type": "PostalAddress", "streetAddress": seo.geo.street, "addressLocality": seo.geo.locality, "addressRegion": seo.geo.region, "addressCountry": seo.geo.country, "postalCode": seo.geo.postalCode },
+      "geo": { "@type": "GeoCoordinates", "latitude": seo.geo.latitude, "longitude": seo.geo.longitude },
+      "openingHours": seo.geo.openingHours,
+      "priceRange": seo.geo.priceRange
+    })} />
+  </head>
+  <body class="min-h-screen bg-background text-foreground antialiased">
+    <header class="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+        <a href="/" class="font-display text-lg font-black">{brand.name}</a>
+        <nav class="hidden items-center gap-6 text-sm font-medium md:flex">
+          <a href="/" class="hover:text-primary">Home</a>
+          <a href="/shop" class="hover:text-primary">Shop</a>
+          <a href="/contacts" class="hover:text-primary">Contact</a>
+        </nav>
+        <div class="flex items-center gap-3">
+          <a href={langHref} class="rounded-md border border-border px-2 py-1 text-xs font-semibold hover:border-primary">{langLabel}</a>
+          <a href="/cart" class="rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">Cart</a>
+        </div>
+      </div>
+    </header>
+    <slot />
+  </body>
+</html>

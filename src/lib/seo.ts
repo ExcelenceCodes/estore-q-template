@@ -44,7 +44,7 @@ export function buildOrganizationSchema(origin: string, contactsData?: any) {
   if (contactsData) {
     if (contactsData.phones?.length) schema.telephone = contactsData.phones;
     if (contactsData.emails?.length) schema.email = contactsData.emails[0];
-    
+
     schema.address = {
       "@type": "PostalAddress",
       streetAddress: contactsData.addressLines?.join(", ") || site.seo.geo.street,
@@ -70,23 +70,31 @@ export function buildOrganizationSchema(origin: string, contactsData?: any) {
       const [days, time] = hours.split(" ");
       const [opens, closes] = (time || "").split("-");
       const dayMap: Record<string, string> = {
-        "Mo": "Monday", "Tu": "Tuesday", "We": "Wednesday", "Th": "Thursday",
-        "Fr": "Friday", "Sa": "Saturday", "Su": "Sunday"
+        Mo: "Monday",
+        Tu: "Tuesday",
+        We: "Wednesday",
+        Th: "Thursday",
+        Fr: "Friday",
+        Sa: "Saturday",
+        Su: "Sunday",
       };
-      
+
       const parts = (days || "").split("-");
-      const dayOfWeek = parts.length === 2 ? 
-        Object.keys(dayMap).slice(
-          Object.keys(dayMap).indexOf(parts[0]),
-          Object.keys(dayMap).indexOf(parts[1]) + 1
-        ).map(d => dayMap[d]) 
-        : [dayMap[parts[0]]];
-        
+      const dayOfWeek =
+        parts.length === 2
+          ? Object.keys(dayMap)
+              .slice(
+                Object.keys(dayMap).indexOf(parts[0]),
+                Object.keys(dayMap).indexOf(parts[1]) + 1,
+              )
+              .map((d) => dayMap[d])
+          : [dayMap[parts[0]]];
+
       return {
         "@type": "OpeningHoursSpecification",
         dayOfWeek: dayOfWeek.filter(Boolean),
         opens: opens || "00:00",
-        closes: closes || "23:59"
+        closes: closes || "23:59",
       };
     });
   }
@@ -94,9 +102,9 @@ export function buildOrganizationSchema(origin: string, contactsData?: any) {
   if (site.seo.geo.priceRange) {
     schema.priceRange = site.seo.geo.priceRange;
   }
-  
+
   schema.areaServed = site.seo.geo.locality;
-  
+
   if (contactsData?.socials) {
     schema.sameAs = contactsData.socials.filter((s: any) => s.url).map((s: any) => s.url);
   }
@@ -114,11 +122,73 @@ export function buildServiceSchema(origin: string, service: any) {
     provider: {
       "@type": "Organization",
       name: site.brand.name,
-      image: `${origin}${site.brand.logo}`
+      image: `${origin}${site.brand.logo}`,
     },
     areaServed: {
       "@type": "State",
-      name: site.seo.geo.region
-    }
+      name: site.seo.geo.region,
+    },
   };
+}
+
+export function buildProductSchema(origin: string, product: any, images?: string[]) {
+  const schema: any = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.description,
+    sku: product.sku,
+    url: `${origin}/shop/product/${product.slug}`,
+    brand: product.brand?.name
+      ? {
+          "@type": "Brand",
+          name: product.brand.name,
+        }
+      : undefined,
+    offers: {
+      "@type": "Offer",
+      url: `${origin}/shop/product/${product.slug}`,
+      priceCurrency: product.currency || "USD",
+      price: Number(product.price),
+      availability: product.status === "published"
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      seller: {
+        "@type": "Organization",
+        name: site.brand.name,
+      },
+    },
+  };
+
+  if (images?.length) {
+    schema.image = images.map((img) => (img.startsWith("http") ? img : `${origin}${img}`));
+  }
+
+  if (product.compare_at_price && Number(product.compare_at_price) > Number(product.price)) {
+    schema.offers.priceValidUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split("T")[0];
+  }
+
+  return Object.fromEntries(Object.entries(schema).filter(([, v]) => v !== undefined));
+}
+
+export function buildItemListSchema(origin: string, items: { name: string; url: string; image?: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      url: `${origin}${item.url}`,
+      ...(item.image ? { image: item.image.startsWith("http") ? item.image : `${origin}${item.image}` } : {}),
+    })),
+  };
+}
+
+export function buildOrganizationJsonLd(origin: string) {
+  return buildOrganizationSchema(origin);
+}
+
+export function buildWebSiteJsonLd(origin: string) {
+  return buildWebSiteSchema(origin);
 }

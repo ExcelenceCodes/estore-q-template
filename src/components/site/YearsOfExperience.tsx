@@ -36,9 +36,7 @@ function CountUp({
   return (
     <span className="flex items-baseline gap-1">
       <span className="text-4xl font-black tracking-tight text-ink">{value}</span>
-      {suffix ? (
-        <span className="text-lg font-bold text-primary">{suffix}</span>
-      ) : null}
+      {suffix ? <span className="text-lg font-bold text-primary">{suffix}</span> : null}
     </span>
   );
 }
@@ -82,7 +80,8 @@ export function YearsOfExperience({ customersServed = 500 }: { customersServed?:
                 key={i}
                 className="h-full flex-1 rounded-full transition-all duration-300"
                 style={{
-                  backgroundColor: visible && i < yearsOfExperience ? "var(--color-primary)" : "transparent",
+                  backgroundColor:
+                    visible && i < yearsOfExperience ? "var(--color-primary)" : "transparent",
                   transform: visible && i < yearsOfExperience ? "scaleY(1)" : "scaleY(0.5)",
                   transitionDelay: visible ? `${i * 40}ms` : "0ms",
                 }}

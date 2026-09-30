@@ -54,9 +54,7 @@ export function themeCss(themeName = activeThemeName()): string {
 }
 
 export function googleFontsHref(): string {
-  const fams = Array.from(
-    new Set([site.theme.font.heading, site.theme.font.body]),
-  )
+  const fams = Array.from(new Set([site.theme.font.heading, site.theme.font.body]))
     .map((f) => `family=${encodeURIComponent(f)}:wght@300;400;500;600;700;800;900`)
     .join("&");
   return `https://fonts.googleapis.com/css2?${fams}&display=swap`;

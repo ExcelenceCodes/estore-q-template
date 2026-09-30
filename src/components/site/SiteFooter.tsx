@@ -52,7 +52,9 @@ export function SiteFooter({ data }: { data: Bootstrap }) {
             <h2 className="font-display text-lg font-extrabold">Get in Touch</h2>
             <address className="mt-4 space-y-1 text-sm not-italic">
               <p className="font-bold">{data.contacts?.companyName}</p>
-              {data.contacts?.addressLines?.map((line) => <p key={line}>{line}</p>)}
+              {data.contacts?.addressLines?.map((line) => (
+                <p key={line}>{line}</p>
+              ))}
               {data.contacts?.phones?.map((p) => (
                 <p key={p}>
                   <a href={`tel:${p.replace(/\s/g, "")}`} className="hover:text-primary">
@@ -71,18 +73,20 @@ export function SiteFooter({ data }: { data: Bootstrap }) {
 
             {data.socials.length ? (
               <div className="mt-5 flex gap-2">
-                {data.socials.filter((s) => s.url).map((s) => (
-                  <a
-                    key={s.platform}
-                    href={s.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={s.platform}
-                    className="grid h-9 w-9 place-items-center rounded-full transition-transform hover:-translate-y-0.5"
-                  >
-                    <SocialIcon platform={s.platform} size={16} />
-                  </a>
-                ))}
+                {data.socials
+                  .filter((s) => s.url)
+                  .map((s) => (
+                    <a
+                      key={s.platform}
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={s.platform}
+                      className="grid h-9 w-9 place-items-center rounded-full transition-transform hover:-translate-y-0.5"
+                    >
+                      <SocialIcon platform={s.platform} size={16} />
+                    </a>
+                  ))}
               </div>
             ) : null}
           </div>

@@ -2,11 +2,7 @@ import { useState, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Plus, Trash2, Save, X, ZoomIn } from "lucide-react";
-import {
-  adminListGallery,
-  savePhoto,
-  deletePhoto,
-} from "@/lib/admin.functions";
+import { adminListGallery, savePhoto, deletePhoto } from "@/lib/admin.functions";
 import {
   Field,
   inputClass,
@@ -44,7 +40,13 @@ const empty: Draft = {
 };
 
 function GalleryAdmin() {
-  const data = Route.useLoaderData() as { rows: any[]; total: number; page: number; pageSize: number; totalPages: number };
+  const data = Route.useLoaderData() as {
+    rows: any[];
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  };
   const rows = data.rows;
   const router = useRouter();
   const [draft, setDraft] = useState<Draft | null>(null);
@@ -66,7 +68,7 @@ function GalleryAdmin() {
       data = data.filter(
         (r: any) =>
           (r.caption ?? "").toLowerCase().includes(q) ||
-          (r.category ?? "").toLowerCase().includes(q)
+          (r.category ?? "").toLowerCase().includes(q),
       );
     }
     return data;
@@ -135,7 +137,13 @@ function GalleryAdmin() {
                   className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
                   disabled={loading === "save"}
                 >
-                  {loading === "save" ? "Saving..." : <><Save className="h-4 w-4" /> Save</>}
+                  {loading === "save" ? (
+                    "Saving..."
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" /> Save
+                    </>
+                  )}
                 </button>
               </div>
             }
@@ -149,19 +157,19 @@ function GalleryAdmin() {
                     setDraft((prev) => ({
                       ...prev,
                       media_id: id,
-                      image_url: id ? mediaUrl(id) ?? prev.image_url : null,
+                      image_url: id ? (mediaUrl(id) ?? prev.image_url) : null,
                     }))
                   }
-                  onDimensions={(width, height) =>
-                    setDraft((prev) => ({ ...prev, width, height }))
-                  }
+                  onDimensions={(width, height) => setDraft((prev) => ({ ...prev, width, height }))}
                 />
               </div>
               <Field label="Image URL" hint="Optional fallback URL if no media is selected.">
                 <input
                   className={inputClass}
                   value={draft.image_url ?? ""}
-                  onChange={(e) => setDraft((prev) => ({ ...prev, image_url: e.target.value || null }))}
+                  onChange={(e) =>
+                    setDraft((prev) => ({ ...prev, image_url: e.target.value || null }))
+                  }
                 />
               </Field>
               <Field label="Category" hint="Used to group photos.">
@@ -192,7 +200,10 @@ function GalleryAdmin() {
                   className={inputClass}
                   value={draft.width ?? ""}
                   onChange={(e) =>
-                    setDraft((prev) => ({ ...prev, width: e.target.value ? Number(e.target.value) : null }))
+                    setDraft((prev) => ({
+                      ...prev,
+                      width: e.target.value ? Number(e.target.value) : null,
+                    }))
                   }
                 />
               </Field>
@@ -202,7 +213,10 @@ function GalleryAdmin() {
                   className={inputClass}
                   value={draft.height ?? ""}
                   onChange={(e) =>
-                    setDraft((prev) => ({ ...prev, height: e.target.value ? Number(e.target.value) : null }))
+                    setDraft((prev) => ({
+                      ...prev,
+                      height: e.target.value ? Number(e.target.value) : null,
+                    }))
                   }
                 />
               </Field>
@@ -282,13 +296,19 @@ function GalleryAdmin() {
                   >
                     Edit
                   </button>
-                   <button
-                     onClick={() => void remove(row.id)}
-                     className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10"
-                     disabled={loading === `delete-${row.id}`}
-                   >
-                     {loading === `delete-${row.id}` ? "Deleting..." : <><Trash2 className="h-4 w-4" /></>}
-                   </button>
+                  <button
+                    onClick={() => void remove(row.id)}
+                    className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10"
+                    disabled={loading === `delete-${row.id}`}
+                  >
+                    {loading === `delete-${row.id}` ? (
+                      "Deleting..."
+                    ) : (
+                      <>
+                        <Trash2 className="h-4 w-4" />
+                      </>
+                    )}
+                  </button>
                 </div>
               </div>
             </div>
@@ -321,7 +341,7 @@ function GalleryAdmin() {
                 </button>
               </div>
             </div>,
-            document.body
+            document.body,
           )
         : null}
     </>

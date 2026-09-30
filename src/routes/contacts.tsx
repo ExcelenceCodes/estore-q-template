@@ -181,23 +181,25 @@ function ContactsPage() {
             </div>
           </form>
 
-           {boot.socials.filter((s) => s.url).length ? (
-             <div className="mt-8 flex items-center gap-3">
-               <span className="text-sm font-semibold">Follow us</span>
-               {boot.socials.filter((s) => s.url).map((s) => (
-                 <a
-                   key={s.platform}
-                   href={s.url}
-                   target="_blank"
-                   rel="noopener noreferrer"
-                   aria-label={s.platform}
-                   className="grid h-9 w-9 place-items-center rounded-full bg-secondary text-secondary-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
-                 >
+          {boot.socials.filter((s) => s.url).length ? (
+            <div className="mt-8 flex items-center gap-3">
+              <span className="text-sm font-semibold">Follow us</span>
+              {boot.socials
+                .filter((s) => s.url)
+                .map((s) => (
+                  <a
+                    key={s.platform}
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.platform}
+                    className="grid h-9 w-9 place-items-center rounded-full bg-secondary text-secondary-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
+                  >
                     <SocialIcon platform={s.platform} size={16} />
-                 </a>
-               ))}
-             </div>
-           ) : null}
+                  </a>
+                ))}
+            </div>
+          ) : null}
         </Reveal>
 
         {site.features.map && contacts?.map?.enabled ? (

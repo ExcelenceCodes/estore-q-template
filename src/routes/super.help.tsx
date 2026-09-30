@@ -14,7 +14,8 @@ const fallback: ContactSettings = {
 };
 
 export const Route = createFileRoute("/super/help")({
-  loader: async () => ((await getSetting({ data: { key: "contacts" } })) as ContactSettings) ?? fallback,
+  loader: async () =>
+    ((await getSetting({ data: { key: "contacts" } })) as ContactSettings) ?? fallback,
   component: HelpPage,
 });
 
@@ -34,11 +35,13 @@ function HelpPage() {
           <h2 className="font-display text-xl font-bold">You're never alone</h2>
         </div>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-          Whether it's a quick question, a technical hiccup, or you just need someone to talk through an idea — we've got your back.
-          Our team is standing by and we treat every message like it came from a friend.
+          Whether it's a quick question, a technical hiccup, or you just need someone to talk
+          through an idea — we've got your back. Our team is standing by and we treat every message
+          like it came from a friend.
         </p>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
-          Pick any channel below and we'll respond with the same care we'd give someone right next to us.
+          Pick any channel below and we'll respond with the same care we'd give someone right next
+          to us.
         </p>
       </div>
 
@@ -47,9 +50,15 @@ function HelpPage() {
           <Panel title="Call us" description="We love a good phone chat.">
             <ul className="space-y-2">
               {contacts.phones.map((phone, i) => (
-                <li key={i} className="flex items-center gap-3 rounded-lg border border-border bg-background/60 p-3">
+                <li
+                  key={i}
+                  className="flex items-center gap-3 rounded-lg border border-border bg-background/60 p-3"
+                >
                   <Phone className="h-4 w-4 shrink-0 text-primary" />
-                  <a href={`tel:${phone.replace(/\s/g, "")}`} className="text-sm font-semibold hover:underline">
+                  <a
+                    href={`tel:${phone.replace(/\s/g, "")}`}
+                    className="text-sm font-semibold hover:underline"
+                  >
                     {phone}
                   </a>
                 </li>
@@ -62,7 +71,10 @@ function HelpPage() {
           <Panel title="Email us" description="We read every message personally.">
             <ul className="space-y-2">
               {contacts.emails.map((email, i) => (
-                <li key={i} className="flex items-center gap-3 rounded-lg border border-border bg-background/60 p-3">
+                <li
+                  key={i}
+                  className="flex items-center gap-3 rounded-lg border border-border bg-background/60 p-3"
+                >
                   <Mail className="h-4 w-4 shrink-0 text-primary" />
                   <a href={`mailto:${email}`} className="text-sm font-semibold hover:underline">
                     {email}
@@ -77,7 +89,10 @@ function HelpPage() {
           <Panel title="Visit us" description="Coffee's on us if you stop by.">
             <ul className="space-y-2">
               {contacts.addressLines.map((line, i) => (
-                <li key={i} className="flex items-start gap-3 rounded-lg border border-border bg-background/60 p-3">
+                <li
+                  key={i}
+                  className="flex items-start gap-3 rounded-lg border border-border bg-background/60 p-3"
+                >
                   <MapPin className="h-4 w-4 shrink-0 text-primary mt-0.5" />
                   <span className="text-sm">{line}</span>
                 </li>
@@ -90,7 +105,10 @@ function HelpPage() {
           <Panel title="When we're around" description="We keep friendly hours.">
             <ul className="space-y-2">
               {contacts.hours.map((slot, i) => (
-                <li key={i} className="flex items-center gap-3 rounded-lg border border-border bg-background/60 p-3">
+                <li
+                  key={i}
+                  className="flex items-center gap-3 rounded-lg border border-border bg-background/60 p-3"
+                >
                   <Clock className="h-4 w-4 shrink-0 text-primary" />
                   <span className="text-sm">
                     <span className="font-semibold">{slot.label}:</span> {slot.value}

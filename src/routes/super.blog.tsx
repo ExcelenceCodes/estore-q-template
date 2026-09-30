@@ -1,6 +1,22 @@
 import { useState, useMemo, useRef } from "react";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { Plus, Trash2, Save, X, Eye, Heading1, Heading2, Heading3, Bold, Italic, List, ListOrdered, Quote, Link as LinkIcon, Code } from "lucide-react";
+import {
+  Plus,
+  Trash2,
+  Save,
+  X,
+  Eye,
+  Heading1,
+  Heading2,
+  Heading3,
+  Bold,
+  Italic,
+  List,
+  ListOrdered,
+  Quote,
+  Link as LinkIcon,
+  Code,
+} from "lucide-react";
 import {
   adminListArticles,
   createArticle,
@@ -59,22 +75,76 @@ type Tool = {
 };
 
 const TOOLS: Tool[] = [
-  { label: "H1", icon: <Heading1 size={16} />, prefix: "# ", suffix: "", placeholder: "Heading 1", block: true },
-  { label: "H2", icon: <Heading2 size={16} />, prefix: "## ", suffix: "", placeholder: "Heading 2", block: true },
-  { label: "H3", icon: <Heading3 size={16} />, prefix: "### ", suffix: "", placeholder: "Heading 3", block: true },
+  {
+    label: "H1",
+    icon: <Heading1 size={16} />,
+    prefix: "# ",
+    suffix: "",
+    placeholder: "Heading 1",
+    block: true,
+  },
+  {
+    label: "H2",
+    icon: <Heading2 size={16} />,
+    prefix: "## ",
+    suffix: "",
+    placeholder: "Heading 2",
+    block: true,
+  },
+  {
+    label: "H3",
+    icon: <Heading3 size={16} />,
+    prefix: "### ",
+    suffix: "",
+    placeholder: "Heading 3",
+    block: true,
+  },
   { label: "Bold", icon: <Bold size={16} />, prefix: "**", suffix: "**", placeholder: "bold text" },
-  { label: "Italic", icon: <Italic size={16} />, prefix: "*", suffix: "*", placeholder: "italic text" },
-  { label: "Bullets", icon: <List size={16} />, prefix: "- ", suffix: "", placeholder: "List item", block: true },
-  { label: "Numbers", icon: <ListOrdered size={16} />, prefix: "1. ", suffix: "", placeholder: "List item", block: true },
-  { label: "Quote", icon: <Quote size={16} />, prefix: "> ", suffix: "", placeholder: "Quote", block: true },
-  { label: "Link", icon: <LinkIcon size={16} />, prefix: "[", suffix: "](url)", placeholder: "link text" },
+  {
+    label: "Italic",
+    icon: <Italic size={16} />,
+    prefix: "*",
+    suffix: "*",
+    placeholder: "italic text",
+  },
+  {
+    label: "Bullets",
+    icon: <List size={16} />,
+    prefix: "- ",
+    suffix: "",
+    placeholder: "List item",
+    block: true,
+  },
+  {
+    label: "Numbers",
+    icon: <ListOrdered size={16} />,
+    prefix: "1. ",
+    suffix: "",
+    placeholder: "List item",
+    block: true,
+  },
+  {
+    label: "Quote",
+    icon: <Quote size={16} />,
+    prefix: "> ",
+    suffix: "",
+    placeholder: "Quote",
+    block: true,
+  },
+  {
+    label: "Link",
+    icon: <LinkIcon size={16} />,
+    prefix: "[",
+    suffix: "](url)",
+    placeholder: "link text",
+  },
   { label: "Code", icon: <Code size={16} />, prefix: "`", suffix: "`", placeholder: "code" },
 ];
 
 function insertMarkdown(
   textarea: HTMLTextAreaElement,
   tool: Tool,
-  setDraft: (updater: (d: Draft) => Draft) => void
+  setDraft: (updater: (d: Draft) => Draft) => void,
 ) {
   const start = textarea.selectionStart ?? 0;
   const end = textarea.selectionEnd ?? 0;
@@ -110,7 +180,13 @@ function insertMarkdown(
 }
 
 function BlogAdmin() {
-  const data = Route.useLoaderData() as { rows: any[]; total: number; page: number; pageSize: number; totalPages: number };
+  const data = Route.useLoaderData() as {
+    rows: any[];
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  };
   const rows = data.rows;
   const router = useRouter();
   const [draft, setDraft] = useState<Draft | null>(null);
@@ -125,9 +201,7 @@ function BlogAdmin() {
     if (search.trim()) {
       const q = search.trim().toLowerCase();
       data = data.filter(
-        (r) =>
-          r.title.toLowerCase().includes(q) ||
-          (r.excerpt ?? "").toLowerCase().includes(q)
+        (r) => r.title.toLowerCase().includes(q) || (r.excerpt ?? "").toLowerCase().includes(q),
       );
     }
     return data;
@@ -183,7 +257,13 @@ function BlogAdmin() {
             className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
             disabled={loading === "create"}
           >
-            {loading === "create" ? "Creating..." : <><Plus className="h-4 w-4" /> New article</>}
+            {loading === "create" ? (
+              "Creating..."
+            ) : (
+              <>
+                <Plus className="h-4 w-4" /> New article
+              </>
+            )}
           </button>
         }
       />
@@ -205,7 +285,13 @@ function BlogAdmin() {
                   className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-semibold text-primary-foreground"
                   disabled={loading === "save"}
                 >
-                  {loading === "save" ? "Saving..." : <><Save className="h-4 w-4" /> Save</>}
+                  {loading === "save" ? (
+                    "Saving..."
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" /> Save
+                    </>
+                  )}
                 </button>
               </div>
             }
@@ -261,7 +347,10 @@ function BlogAdmin() {
                 </Field>
               </div>
               <div className="md:col-span-2">
-                <Field label="Body" hint="Full article content. Use the toolbar to format, then preview on the right.">
+                <Field
+                  label="Body"
+                  hint="Full article content. Use the toolbar to format, then preview on the right."
+                >
                   <div className="rounded-md border border-border">
                     <div className="flex flex-wrap items-center gap-1 border-b border-border bg-muted/40 px-2 py-1.5">
                       {TOOLS.map((tool) => (
@@ -290,7 +379,11 @@ function BlogAdmin() {
                   </div>
                   <div
                     className="prose-article mt-3 overflow-hidden rounded-md border border-border bg-background p-4"
-                    dangerouslySetInnerHTML={{ __html: markdownToHtml(draft.body) || '<div class="text-muted-foreground">Preview will appear here...</div>' }}
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        markdownToHtml(draft.body) ||
+                        '<div class="text-muted-foreground">Preview will appear here...</div>',
+                    }}
                   />
                 </Field>
               </div>
@@ -303,7 +396,10 @@ function BlogAdmin() {
                     onChange={(e) =>
                       setDraft({
                         ...draft,
-                        tags: e.target.value.split("\n").map((v) => v.trim()).filter(Boolean),
+                        tags: e.target.value
+                          .split("\n")
+                          .map((v) => v.trim())
+                          .filter(Boolean),
                       })
                     }
                   />
@@ -326,7 +422,9 @@ function BlogAdmin() {
                     <input
                       className={inputClass}
                       value={draft.cover_url ?? ""}
-                      onChange={(e) => setDraft({ ...draft, cover_url: e.target.value, cover_id: null })}
+                      onChange={(e) =>
+                        setDraft({ ...draft, cover_url: e.target.value, cover_id: null })
+                      }
                     />
                   </Field>
                 </div>
@@ -361,10 +459,7 @@ function BlogAdmin() {
 
       <div className="grid gap-4">
         {filtered.map((row) => (
-          <article
-            key={row.id}
-            className="rounded-xl border border-border bg-card p-5 shadow-sm"
-          >
+          <article key={row.id} className="rounded-xl border border-border bg-card p-5 shadow-sm">
             <div className="flex items-start justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
@@ -413,11 +508,19 @@ function BlogAdmin() {
                   Edit
                 </button>
                 <button
-                  onClick={() => execute(`delete-${row.id}`, () => remove(row.id), "Article deleted")}
+                  onClick={() =>
+                    execute(`delete-${row.id}`, () => remove(row.id), "Article deleted")
+                  }
                   className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10"
                   disabled={loading === `delete-${row.id}`}
                 >
-                  {loading === `delete-${row.id}` ? "Deleting..." : <><Trash2 className="h-4 w-4" /> Delete</>}
+                  {loading === `delete-${row.id}` ? (
+                    "Deleting..."
+                  ) : (
+                    <>
+                      <Trash2 className="h-4 w-4" /> Delete
+                    </>
+                  )}
                 </button>
               </div>
             </div>

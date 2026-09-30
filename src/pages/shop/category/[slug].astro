@@ -1,0 +1,86 @@
+---
+import { getCategory, listProducts } from "@/lib/public.functions";
+import { site } from "@/lib/site";
+import { detectLocale, type Locale } from "@/lib/i18n";
+import { t } from "@/lib/i18n/translate";
+
+const requestLocale = (() => {
+  try {
+    const mod = await import("@tanstack/react-start/server");
+    return () => detectLocale(mod.getRequest ? mod.getRequest()?.headers?.get("accept-language") : undefined);
+  } catch {
+    return () => "en" as const;
+  }
+})();
+
+const locale: Locale = requestLocale();
+const dict = (key: string, fallback?: string) => t(locale, key, fallback);
+
+type Props = { slug: string };
+const { slug } = Astro.params as Props;
+
+const { data: category } = await getCategory({ data: { slug } });
+if (!category) return Astro.redirect("/shop");
+
+const childIds = [category.category.id, ...(category.children ?? []).map((c: any) => c.id)];
+
+const { data: products } = await listProducts({
+  data: {
+    category: slug,
+    pageSize: 50,
+  },
+});
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{category.category.name} | {site.brand.name}</title>
+    <meta name="description" content={category.category.description?.slice(0, 160) || `Browse ${category.category.name}`} />
+    <link rel="canonical" href={`https://estore.q-template.com/shop/category/${category.category.slug}`} />
+  </head>
+  <body>
+    <main>
+      <div class="container-page py-12">
+        <nav class="mb-8 text-sm text-muted-foreground">
+          <a href="/" class="hover:underline">{dict("nav.home", "Home")}</a>
+          <span class="mx-2">/</span>
+          <a href="/shop" class="hover:underline">{dict("nav.shop", "Shop")}</a>
+          <span class="mx-2">/</span>
+          <span class="text-foreground">{category.category.name}</span>
+        </nav>
+
+        <h1 class="text-4xl font-bold mb-8">{category.category.name}</h1>
+
+        {category.children?.length > 0 && (
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+            {category.children.map((child: any) => (
+              <a href={`/shop/category/${child.slug}`} class="p-4 border rounded-lg hover:border-primary transition-colors">
+                <h3 class="font-semibold">{child.name}</h3>
+              </a>
+            ))}
+          </div>
+        )}
+
+        {products.rows.length === 0 ? (
+          <p class="text-muted-foreground">{dict("shop.noProductsFound", "No products found in this category.")}</p>
+        ) : (
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {products.rows.map((product: any) => (
+              <a href={`/shop/product/${product.slug}`} class="border rounded-lg overflow-hidden hover:border-primary transition-colors">
+                <div class="aspect-square bg-muted">
+                  <img src={product.image_url || '/placeholder.png'} alt={product.title} class="w-full h-full object-cover" />
+                </div>
+                <div class="p-4">
+                  <h3 class="font-semibold mb-2">{product.title}</h3>
+                  <p class="text-primary font-bold">TZS {Number(product.price).toLocaleString()}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </main>
+  </body>
+</html>

@@ -48,9 +48,7 @@ function AboutPage() {
           </Reveal>
           <Reveal delay={120}>
             <div className="card border-l-2 border-l-primary p-7">
-              <p className="font-display text-lg font-bold leading-snug">
-                {boot.about?.highlight}
-              </p>
+              <p className="font-display text-lg font-bold leading-snug">{boot.about?.highlight}</p>
               <p className="mt-4 text-sm text-muted-foreground">
                 Serving clients since {site.brand.foundedYear}.
               </p>
@@ -63,7 +61,9 @@ function AboutPage() {
         <section className="bg-secondary py-16">
           <div className="container-page">
             <Reveal className="max-w-xl">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Our people</p>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">
+                Our people
+              </p>
               <h2 className="mt-3 font-display text-3xl font-black">Meet the team</h2>
             </Reveal>
 
@@ -82,7 +82,9 @@ function AboutPage() {
                       <h3 className="font-display text-base font-bold">{m.name}</h3>
                       <p className="mt-1 text-sm text-primary">{m.role}</p>
                       {m.bio ? (
-                        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">{m.bio}</p>
+                        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                          {m.bio}
+                        </p>
                       ) : null}
                     </div>
                   </div>

@@ -109,7 +109,11 @@ function ServiceDetail() {
                       params={{ slug: o.slug }}
                       className="flex items-start gap-2.5 text-sm transition-colors hover:text-primary"
                     >
-                      <Icon name={o.icon || "briefcase"} size={17} className="mt-0.5 shrink-0 text-primary" />
+                      <Icon
+                        name={o.icon || "briefcase"}
+                        size={17}
+                        className="mt-0.5 shrink-0 text-primary"
+                      />
                       <span>{o.title}</span>
                     </Link>
                   </li>

@@ -40,7 +40,9 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function fmt(d?: string | null) {
-  return d ? new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "";
+  return d
+    ? new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
+    : "";
 }
 
 function BlogIndex() {
@@ -68,7 +70,11 @@ function BlogIndex() {
                 <Reveal as="li" key={a.slug} delay={i * 60}>
                   <article className="surface-card h-full overflow-hidden">
                     {imageOf(a.cover_id, a.cover_url) ? (
-                      <Link to="/blog/$slug" params={{ slug: a.slug }} className="block overflow-hidden">
+                      <Link
+                        to="/blog/$slug"
+                        params={{ slug: a.slug }}
+                        className="block overflow-hidden"
+                      >
                         <img
                           src={imageOf(a.cover_id, a.cover_url) as string}
                           alt={a.title}
@@ -84,11 +90,17 @@ function BlogIndex() {
                         {a.author ? ` · ${a.author}` : ""}
                       </p>
                       <h2 className="mt-2 font-display text-lg font-bold leading-snug">
-                        <Link to="/blog/$slug" params={{ slug: a.slug }} className="hover:text-primary">
+                        <Link
+                          to="/blog/$slug"
+                          params={{ slug: a.slug }}
+                          className="hover:text-primary"
+                        >
                           {a.title}
                         </Link>
                       </h2>
-                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{a.excerpt}</p>
+                      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                        {a.excerpt}
+                      </p>
                       <Link
                         to="/blog/$slug"
                         params={{ slug: a.slug }}

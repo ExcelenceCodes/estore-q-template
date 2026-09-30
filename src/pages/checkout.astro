@@ -1,0 +1,136 @@
+---
+import { validateCoupon, checkout, getCart, listShippingMethods } from "@/lib/public.functions";
+import { site } from "@/lib/site";
+import { detectLocale, type Locale } from "@/lib/i18n";
+import { t } from "@/lib/i18n/translate";
+
+const requestLocale = (() => {
+  try {
+    const mod = await import("@tanstack/react-start/server");
+    return () => detectLocale(mod.getRequest ? mod.getRequest()?.headers?.get("accept-language") : undefined);
+  } catch {
+    return () => "en" as const;
+  }
+})();
+
+const locale: Locale = requestLocale();
+
+const dict = (key: string, fallback?: string) => t(locale, key, fallback);
+
+const { data: cartData } = await getCart();
+const cart = cartData ?? { items: [], subtotal: "0" };
+const subtotal = Number(cart.subtotal);
+
+const { data: shippingMethods } = await listShippingMethods();
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{dict("checkout.title", "Checkout")} | {site.brand.name}</title>
+    <meta name="description" content={dict("checkout.completeYourPurchase", "Complete your purchase")} />
+    <link rel="canonical" href="https://estore.q-template.com/checkout" />
+  </head>
+  <body>
+    <main>
+      <div class="container-page py-12">
+        <h1 class="text-4xl font-bold mb-8">{dict("checkout.title", "Checkout")}</h1>
+
+        <form method="POST" action="/api/checkout" class="space-y-6">
+          <div>
+            <h2 class="text-xl font-semibold mb-4">{dict("checkout.contactInformation", "Contact Information")}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium mb-1">{dict("auth.name", "Name")}</label>
+                <input type="text" name="name" required class="w-full rounded-md border px-3 py-2" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">{dict("auth.email", "Email")}</label>
+                <input type="email" name="email" required class="w-full rounded-md border px-3 py-2" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">{dict("auth.phone", "Phone")}</label>
+                <input type="tel" name="phone" class="w-full rounded-md border px-3 py-2" />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h2 class="text-xl font-semibold mb-4">{dict("checkout.shippingAddress", "Shipping Address")}</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="md:col-span-2">
+                <label class="block text-sm font-medium mb-1">{dict("checkout.streetAddress", "Street Address")}</label>
+                <input type="text" name="address" required class="w-full rounded-md border px-3 py-2" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">{dict("checkout.city", "City")}</label>
+                <input type="text" name="city" required class="w-full rounded-md border px-3 py-2" />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-1">{dict("checkout.postalCode", "Postal Code")}</label>
+                <input type="text" name="postal" class="w-full rounded-md border px-3 py-2" />
+              </div>
+            </div>
+          </div>
+
+          {shippingMethods?.length > 0 && (
+            <div>
+              <h2 class="text-xl font-semibold mb-4">{dict("checkout.shippingMethod", "Shipping Method")}</h2>
+              <div class="space-y-2">
+                {shippingMethods.map((method: any) => (
+                  <label class="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:border-primary">
+                    <div class="flex items-center gap-3">
+                      <input type="radio" name="shippingMethodId" value={method.id} class="accent-primary" />
+                      <div>
+                        <p class="font-medium">{method.name}</p>
+                        <p class="text-sm text-muted-foreground">{method.description} ({method.estimated_days} days)</p>
+                      </div>
+                    </div>
+                    <span class="font-semibold">TZS {Number(method.price).toLocaleString()}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div>
+            <h2 class="text-xl font-semibold mb-4">{dict("checkout.couponCode", "Coupon Code")}</h2>
+            <div class="flex gap-2">
+              <input type="text" name="couponCode" placeholder="Enter code" class="flex-1 rounded-md border px-3 py-2" />
+              <button type="button" class="px-4 py-2 border rounded-md hover:border-primary">{dict("checkout.apply", "Apply")}</button>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-primary-foreground hover:opacity-90 transition-opacity">
+            {dict("checkout.placeOrder", "Place Order")}
+          </button>
+        </form>
+
+        <div class="mt-12">
+          <div class="border rounded-lg p-6">
+            <h3 class="font-semibold mb-4">{dict("checkout.orderSummary", "Order Summary")}</h3>
+            <div class="space-y-2 text-sm">
+              <div class="flex justify-between">
+                <span class="text-muted-foreground">{dict("cart.subtotal", "Subtotal")}</span>
+                <span>TZS {subtotal.toLocaleString()}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-muted-foreground">{dict("cart.shipping", "Shipping")}</span>
+                <span>{dict("checkout.calculatedAtNextStep", "Calculated at next step")}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-muted-foreground">{dict("cart.tax", "Tax")}</span>
+                <span>TZS 0</span>
+              </div>
+              <div class="border-t pt-2 mt-2 flex justify-between font-semibold">
+                <span>{dict("cart.total", "Total")}</span>
+                <span>TZS {subtotal.toLocaleString()}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,150 @@
+---
+import ProductGrid from '@/components/astro/ProductGrid.astro';
+import { db } from '@/lib/db.server';
+import { site } from '@/lib/site';
+
+const pageSize = 20;
+const url = new URL(Astro.request.url);
+const page = Number(url.searchParams.get('page') || '1');
+const category = url.searchParams.get('category') || undefined;
+const brand = url.searchParams.get('brand') || undefined;
+const q = url.searchParams.get('q') || undefined;
+
+const client = db();
+let query = client
+  .from('products')
+  .select('id,slug,title,price,compare_at_price,image_url,featured,published_at', { count: 'exact' })
+  .eq('status', 'published')
+  .order('published_at', { ascending: false })
+  .range((page - 1) * pageSize, page * pageSize - 1);
+
+if (brand) {
+  const { data: brandRow } = await client.from('brands').select('id').eq('slug', brand).eq('active', true).maybeSingle();
+  if (brandRow) query = query.eq('brand_id', brandRow.id);
+}
+
+if (category) {
+  const { data: catRow } = await client.from('product_categories').select('id').eq('slug', category).eq('active', true).maybeSingle();
+  if (catRow) {
+    const { data: childCats } = await client.from('product_categories').select('id').eq('parent_id', catRow.id).eq('active', true);
+    const ids = [catRow.id, ...(childCats ?? []).map((c: any) => c.id)];
+    const { data: assignments } = await client.from('product_category_assignments').select('product_id').in('category_id', ids);
+    const productIds = (assignments ?? []).map((a: any) => a.product_id);
+    if (productIds.length === 0) {
+      products = [];
+      total = 0;
+    } else {
+      query = query.in('id', productIds);
+    }
+  }
+}
+
+if (q) {
+  const term = q.replace(/[%,()]/g, ' ').trim();
+  if (term) query = query.or(`title.ilike.%${term}%,description.ilike.%${term}%,sku.ilike.%${term}%`);
+}
+
+let products: any[] = [];
+let total = 0;
+const { data: productsResult, count: totalResult } = await query;
+products = productsResult ?? [];
+total = totalResult ?? 0;
+
+const { data: allCategories } = await client
+  .from('product_categories')
+  .select('id,name,slug,parent_id')
+  .eq('active', true)
+  .order('order_index');
+
+const { data: allBrands } = await client
+  .from('brands')
+  .select('id,name,slug')
+  .eq('active', true)
+  .order('name');
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop | {site.brand.name}</title>
+    <meta name="description" content={site.seo.defaultDescription} />
+    <link rel="canonical" href="https://estore.q-template.com/shop" />
+  </head>
+  <body>
+    <main>
+      <div class="container-page py-12">
+        <h1 class="text-4xl font-bold mb-8">Shop</h1>
+
+        <div class="flex flex-col md:flex-row gap-8">
+          <aside class="w-full md:w-64 shrink-0">
+            <div class="mb-6">
+              <h3 class="font-semibold mb-3">Categories</h3>
+              <ul class="space-y-2 text-sm">
+                {allCategories?.filter((c: any) => !c.parent_id).map((c: any) => (
+                  <li>
+                    <a href={`/shop?category=${c.slug}`} class={`hover:text-primary ${category === c.slug ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+                      {c.name}
+                    </a>
+                    {allCategories.filter((child: any) => child.parent_id === c.id).length > 0 && (
+                      <ul class="ml-4 mt-1 space-y-1">
+                        {allCategories.filter((child: any) => child.parent_id === c.id).map((child: any) => (
+                          <li>
+                            <a href={`/shop?category=${child.slug}`} class={`hover:text-primary ${category === child.slug ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+                              {child.name}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {allBrands?.length > 0 && (
+              <div>
+                <h3 class="font-semibold mb-3">Brands</h3>
+                <ul class="space-y-2 text-sm">
+                  {allBrands.map((b: any) => (
+                    <li>
+                      <a href={`/shop?brand=${b.slug}`} class={`hover:text-primary ${brand === b.slug ? 'text-primary font-medium' : 'text-muted-foreground'}`}>
+                        {b.name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </aside>
+
+          <div class="flex-1">
+            {q && (
+              <p class="mb-4 text-sm text-muted-foreground">
+                Search results for: <span class="font-medium text-foreground">"{q}"</span>
+              </p>
+            )}
+
+            {products?.length === 0 ? (
+              <p class="text-muted-foreground">No products found.</p>
+            ) : (
+              <>
+                <ProductGrid products={products ?? []} columns={3} />
+
+                {total > pageSize && (
+                  <div class="mt-8 flex justify-center gap-2">
+                    {Array.from({ length: Math.ceil(total / pageSize) }, (_, i) => i + 1).map((p) => (
+                      <a href={`/shop?page=${p}${category ? `&category=${category}` : ''}${brand ? `&brand=${brand}` : ''}${q ? `&q=${encodeURIComponent(q)}` : ''}`} class={`px-3 py-1 border rounded ${p === page ? 'bg-primary text-primary-foreground' : 'hover:border-primary'}`}>
+                        {p}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

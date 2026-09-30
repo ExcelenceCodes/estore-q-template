@@ -73,7 +73,9 @@ export const Route = createFileRoute("/blog/$slug")({
 });
 
 function fmt(d?: string | null) {
-  return d ? new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "";
+  return d
+    ? new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
+    : "";
 }
 
 function ArticlePage() {
@@ -123,10 +125,7 @@ function ArticlePage() {
         </Reveal>
       ) : null}
 
-      <Reveal
-        className="prose-article mx-auto mt-10 max-w-3xl"
-        delay={80}
-      >
+      <Reveal className="prose-article mx-auto mt-10 max-w-3xl" delay={80}>
         {renderRichBody(article.body)}
       </Reveal>
 

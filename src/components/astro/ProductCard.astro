@@ -1,0 +1,35 @@
+---
+interface Product {
+  id: string;
+  slug: string;
+  title: string;
+  price: number | string;
+  compare_at_price?: number | string | null;
+  image_url?: string | null;
+  featured?: boolean;
+}
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const price = typeof product.price === 'number' ? product.price : Number(product.price);
+const compareAt = product.compare_at_price ? (typeof product.compare_at_price === 'number' ? product.compare_at_price : Number(product.compare_at_price)) : null;
+---
+
+<a href={`/shop/product/${product.slug}`} class="group block">
+  <div class="aspect-square bg-muted rounded-lg overflow-hidden mb-3">
+    <img
+      src={product.image_url || '/placeholder.png'}
+      alt={product.title}
+      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+      loading="lazy"
+    />
+  </div>
+  <h3 class="font-semibold mb-1 group-hover:text-primary transition-colors line-clamp-2">{product.title}</h3>
+  <div class="flex items-baseline gap-2">
+    <span class="font-bold">TZS {price.toLocaleString()}</span>
+    {compareAt && <span class="text-sm text-muted-foreground line-through">TZS {compareAt.toLocaleString()}</span>}
+  </div>
+</a>

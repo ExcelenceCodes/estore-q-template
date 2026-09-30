@@ -2,7 +2,14 @@ import { useState, useMemo } from "react";
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 import { Trash2, Mail, MailOpen } from "lucide-react";
 import { adminListInquiries, setInquiryHandled, deleteInquiry } from "@/lib/admin.functions";
-import { Field, PageHeading, Panel, useAction, Pagination, inputClass } from "@/components/admin/ui";
+import {
+  Field,
+  PageHeading,
+  Panel,
+  useAction,
+  Pagination,
+  inputClass,
+} from "@/components/admin/ui";
 import { formatDate } from "@/lib/admin-client";
 
 export const Route = createFileRoute("/super/inquiries")({
@@ -55,7 +62,9 @@ function InquiriesAdmin() {
     const from = opts.from !== undefined ? opts.from : dateFrom;
     const to = opts.to !== undefined ? opts.to : dateTo;
     await router.invalidate({
-      load: { loader: () => adminListInquiries({ data: { page: opts.page ?? page, q, from, to } }) },
+      load: {
+        loader: () => adminListInquiries({ data: { page: opts.page ?? page, q, from, to } }),
+      },
     });
     if (opts.page) setPage(opts.page);
   }
@@ -125,7 +134,10 @@ function InquiriesAdmin() {
                 </p>
                 <div className="divide-y divide-border rounded-lg border border-border">
                   {rows.map((row) => (
-                    <div key={row.id} className="flex flex-col gap-3 p-4 md:flex-row md:items-start md:justify-between">
+                    <div
+                      key={row.id}
+                      className="flex flex-col gap-3 p-4 md:flex-row md:items-start md:justify-between"
+                    >
                       <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2">
                           <p className="text-sm font-semibold">{row.name}</p>
@@ -145,17 +157,31 @@ function InquiriesAdmin() {
                           }`}
                           disabled={loading === row.id}
                         >
-                          {loading === row.id ? "..." : <>
-                            {row.handled ? <MailOpen className="h-4 w-4" /> : <Mail className="h-4 w-4" />}
-                            {row.handled ? "Reopen" : "Mark handled"}
-                          </>}
+                          {loading === row.id ? (
+                            "..."
+                          ) : (
+                            <>
+                              {row.handled ? (
+                                <MailOpen className="h-4 w-4" />
+                              ) : (
+                                <Mail className="h-4 w-4" />
+                              )}
+                              {row.handled ? "Reopen" : "Mark handled"}
+                            </>
+                          )}
                         </button>
                         <button
                           onClick={() => remove(row.id)}
                           className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10"
                           disabled={loading === `delete-${row.id}`}
                         >
-                          {loading === `delete-${row.id}` ? "Deleting..." : <><Trash2 className="h-4 w-4" /> Delete</>}
+                          {loading === `delete-${row.id}` ? (
+                            "Deleting..."
+                          ) : (
+                            <>
+                              <Trash2 className="h-4 w-4" /> Delete
+                            </>
+                          )}
                         </button>
                       </div>
                     </div>
@@ -166,7 +192,11 @@ function InquiriesAdmin() {
           </div>
         )}
 
-        <Pagination page={data.page} totalPages={data.totalPages} onPageChange={(p) => load({ page: p })} />
+        <Pagination
+          page={data.page}
+          totalPages={data.totalPages}
+          onPageChange={(p) => load({ page: p })}
+        />
       </Panel>
     </>
   );

@@ -29,9 +29,21 @@ export const Route = createFileRoute("/")({
 });
 
 const pillars = [
-  { icon: ShieldCheck, title: "Fully compliant", body: "Every filing prepared to the exact standard the registrar expects." },
-  { icon: Clock, title: "Faster turnaround", body: "Clear timelines and proactive follow-up until your certificate is issued." },
-  { icon: Users, title: "One dedicated team", body: "A named consultant owns your file from first call to final approval." },
+  {
+    icon: ShieldCheck,
+    title: "Fully compliant",
+    body: "Every filing prepared to the exact standard the registrar expects.",
+  },
+  {
+    icon: Clock,
+    title: "Faster turnaround",
+    body: "Clear timelines and proactive follow-up until your certificate is issued.",
+  },
+  {
+    icon: Users,
+    title: "One dedicated team",
+    body: "A named consultant owns your file from first call to final approval.",
+  },
 ];
 
 function HomePage() {
@@ -116,7 +128,10 @@ function HomePage() {
                   </p>
                   <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary">
                     Learn more
-                    <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+                    <ArrowRight
+                      size={15}
+                      className="transition-transform group-hover:translate-x-1"
+                    />
                   </span>
                 </Link>
               </Reveal>
@@ -145,7 +160,13 @@ function HomePage() {
                   className="surface-card block h-full p-6 transition-transform hover:-translate-y-1"
                 >
                   <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    {a.published_at ? new Date(a.published_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : null}
+                    {a.published_at
+                      ? new Date(a.published_at).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })
+                      : null}
                   </p>
                   <h3 className="mt-2 font-display text-base font-bold leading-snug">{a.title}</h3>
                 </Link>
@@ -183,5 +204,3 @@ function HomePage() {
     </>
   );
 }
-
-
