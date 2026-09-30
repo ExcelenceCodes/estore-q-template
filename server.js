@@ -10,7 +10,7 @@ const ASTRO_OUT = join(__dirname, "dist", "astro");
 const TANSTACK_PORT = Number(process.env.TANSTACK_PORT || 3_000);
 const TANSTACK_HOST = process.env.TANSTACK_HOST || `http://127.0.0.1:${TANSTACK_PORT}`;
 
-const MIME: Record<string, string> = {
+const MIME = {
   ".html": "text/html",
   ".js": "application/javascript",
   ".css": "text/css",
